@@ -1,0 +1,13 @@
+node_modules/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+.env
+.env.local
+*.log
+.DS_Store
+
+# Artalk / PostgreSQL runtime data must never enter Git.
+deploy/artalk/data/
+deploy/artalk/postgres-data/
+deploy/artalk/.env
+deploy/artalk/backups/
