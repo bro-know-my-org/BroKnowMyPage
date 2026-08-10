@@ -117,16 +117,16 @@ tags:
 
 ## GitHub Pages 上线
 
-仓库已创建并设置为 `origin`，目前仍为空；首次提交整理完成后再统一 push。上线时：
+仓库 `origin` 使用 SSH 地址。首次发布已于 2026-08-10 完成，GitHub Pages 与 hny-jp 两条工作流均已成功执行。当前配置为：
 
-1. 将整理后的首次提交推送到 `main` 分支；
-2. 在仓库 Pages 设置中选择 `GitHub Actions` 作为 Source；
-3. 添加 `SITE_URL=https://bro-know-my.org`、`VITE_ARTALK_SERVER=https://comment.bro-know-my.org` 和 `VITE_ARTALK_SITE=兄弟懂我的页面` 三个 Actions Variables；
-4. 首次先以 DNS-only 完成自定义域名校验和 GitHub Pages HTTPS；同时复核现有评论域名 A 记录与 CORS；
-5. 确认直连正常后再开启 Cloudflare 代理；
-6. 静态资源允许缓存，评论 API、管理入口和 OAuth 回调明确绕过缓存。
+1. Pages Source 使用 `GitHub Actions`；
+2. Actions Variables 配置 `SITE_URL=https://bro-know-my.org`、`VITE_ARTALK_SERVER=https://comment.bro-know-my.org` 和 `VITE_ARTALK_SITE=兄弟懂我的页面`；
+3. 自定义域名为 `bro-know-my.org`，HTTPS 已启用，当前以 DNS-only 直连 GitHub Pages；
+4. 后续开启 Cloudflare 代理时，静态资源允许缓存，评论 API、管理入口和 OAuth 回调必须绕过缓存。
 
 工作流位于 `.github/workflows/deploy-pages.yml`。每次部署都对应一个 Git commit；需要回滚时，revert 问题 commit 或重新运行目标 commit 对应的工作流。
+
+GitHub 默认 Pages 地址 `https://bro-know-my-org.github.io/BroKnowMyPage/` 会跳转到自定义域名，不能作为绕过自定义域名的独立应急入口。静态备用入口使用 `https://hello-happy.world/`。
 
 ## Artalk
 
@@ -138,14 +138,14 @@ tags:
 
 `hello-happy.world` 不跳转或整站反代 GitHub Pages，而是直接从 hny-jp 的 Nginx 提供构建产物。发布、验证与回滚步骤见 [`deploy/static-hhw/README.md`](deploy/static-hhw/README.md)。旧版动态博客已经归档并停止，其原 `/api/` 返回 `410 Gone`；服务器上的其他管理路由和子域服务保持独立。
 
-VitePress 构建产物已经完成过手工原子发布验证。外观定稿前，线上暂时切换到独立施工页；当前 release 为 `20260809-maintenance-03`，上一版仍保留可回滚。
+VitePress 构建产物已通过 Actions 完成首次正式原子发布；当前 release 为 commit `e56b4b10751e0b875e5e94c0679533baf435ce80`。独立施工页与上一版 release 仍保留用于应急切换。
 
 ## 后续工作
 
-- 首页和整体外观已完成一轮桌面、手机与深色模式收尾；继续统一现有文章格式，再整理首次提交和 push；
-- 首次 push 后验证 GitHub Pages 与 hny-jp 两条 Actions 发布链路，并绑定 `bro-know-my.org`；
+- GitHub Pages 与 hny-jp 两条 Actions 发布链路已验证，后续增加构建或部署失败提醒；
+- `bro-know-my.org` 当前以 DNS-only 运行，后续配置 Cloudflare 缓存和安全规则后再评估是否开启代理；
 - Artalk 评论、回复、点赞、登录、删除和通知流程已完成测试；
-- 评论数据库已有 VPS 外加密备份，后续补充构建或部署失败提醒；
+- 评论数据库已有 VPS 外加密备份；
 - 根据实际文章补充图片与站点图标；
 - 上线后实测电信、联通、移动和海外网络，不预设 Cloudflare 一定改善大陆访问；
 - 发布前检查现有 Codex 速查内容与目标 Codex 版本是否一致。

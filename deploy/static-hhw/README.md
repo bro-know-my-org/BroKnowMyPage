@@ -2,7 +2,7 @@
 
 `hello-happy.world` 由 hny-jp 的 Nginx 直接提供 VitePress 构建产物。它是 `bro-know-my.org` 的静态镜像，不使用 301 跳转，也不在请求时回源 GitHub Pages。
 
-当前运维状态（2026-08-09）：VitePress 正式构建已经完成手工原子发布验证，但在外观定稿和首次 push 前，`current` 暂时指向独立施工页 release `20260809-maintenance-03`。施工页源码位于 [`maintenance/index.html`](maintenance/index.html)，旧 release 保留用于回滚。
+当前运维状态（2026-08-10）：首次 Actions 正式发布已成功完成，`current` 指向 release `e56b4b10751e0b875e5e94c0679533baf435ce80`。施工页源码位于 [`maintenance/index.html`](maintenance/index.html)，施工页和旧 release 继续保留用于应急切换与回滚。
 
 正式发布由 [`.github/workflows/deploy-hhw.yml`](../../.github/workflows/deploy-hhw.yml) 完成。工作流使用受限的 `bkm-deploy` 用户，只能写入发布目录；每次上传到以 commit SHA 命名的 release，再原子切换 `current` 软链接，不需要 sudo 或重载 Nginx。
 
