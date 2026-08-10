@@ -138,7 +138,7 @@ GitHub 默认 Pages 地址 `https://bro-know-my-org.github.io/BroKnowMyPage/` �
 
 `hello-happy.world` 不跳转或整站反代 GitHub Pages，而是直接从 hny-jp 的 Nginx 提供构建产物。发布、验证与回滚步骤见 [`deploy/static-hhw/README.md`](deploy/static-hhw/README.md)。旧版动态博客已经归档并停止，其原 `/api/` 返回 `410 Gone`；服务器上的其他管理路由和子域服务保持独立。
 
-VitePress 构建产物已通过 Actions 完成首次正式原子发布；当前 release 为 commit `e56b4b10751e0b875e5e94c0679533baf435ce80`。独立施工页与上一版 release 仍保留用于应急切换。
+VitePress 构建产物已通过 Actions 完成正式原子发布；`current` 指向最近一次成功部署的 `main` commit release。独立施工页与上一版 release 仍保留用于应急切换。
 
 ## 后续工作
 
