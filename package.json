@@ -1,0 +1,33 @@
+{
+  "name": "bro-know-my-page",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.13.1",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "dev": "vitepress dev docs --port 55173",
+    "build": "vitepress build docs && tsx scripts/generate-site-files.ts",
+    "preview": "vitepress preview docs --port 55174",
+    "check:content": "tsx scripts/check-content.ts",
+    "typecheck": "vue-tsc --noEmit",
+    "check": "pnpm check:content && pnpm typecheck && vitepress build docs"
+  },
+  "dependencies": {
+    "artalk": "^2.10.0",
+    "feed": "^6.0.0",
+    "gray-matter": "^4.0.3",
+    "vue": "^3.5.41"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.23.11",
+    "typescript": "^5.9.3",
+    "vite": "6.4.3",
+    "vitepress": "^1.6.4",
+    "vue-tsc": "^3.3.9"
+  }
+}

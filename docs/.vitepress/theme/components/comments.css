@@ -1,0 +1,61 @@
+.comments {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.comments__heading {
+  margin-bottom: 20px;
+}
+
+.comments__heading h2 {
+  margin: 0;
+  border: 0;
+  font-size: 22px;
+}
+
+.comments__notice {
+  padding: 16px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-3);
+  font-size: 13px;
+}
+
+.comments .artalk,
+.comments .artalk.atk-dark-mode,
+html .atk-layer-wrap,
+html .atk-layer-wrap.atk-dark-mode {
+  --at-color-font: var(--vp-c-text-1);
+  --at-color-deep: var(--vp-c-text-1);
+  --at-color-sub: var(--vp-c-text-2);
+  --at-color-grey: var(--vp-c-text-2);
+  --at-color-meta: var(--vp-c-text-3);
+  --at-color-border: var(--vp-c-divider);
+  --at-color-light: var(--vp-c-brand-soft);
+  --at-color-bg: var(--vp-c-bg);
+  --at-color-bg-transl: color-mix(in srgb, var(--vp-c-bg) 94%, transparent);
+  --at-color-bg-grey: var(--vp-c-bg-soft);
+  --at-color-bg-grey-transl: color-mix(in srgb, var(--vp-c-bg-soft) 90%, transparent);
+  --at-color-bg-light: var(--vp-c-brand-soft);
+  --at-color-main: var(--vp-c-brand-1);
+  --at-color-gradient: linear-gradient(180deg, transparent, var(--vp-c-bg));
+}
+
+.comments .artalk {
+  color-scheme: light;
+}
+
+.dark .comments .artalk,
+.dark .atk-layer-wrap {
+  color-scheme: dark;
+}
+
+.comments .atk-main-editor {
+  border-radius: 8px;
+}
+
+.comments .atk-main-editor > .atk-textarea-wrap > .atk-textarea {
+  caret-color: var(--vp-c-brand-1);
+}
