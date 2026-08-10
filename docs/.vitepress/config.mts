@@ -1,4 +1,5 @@
 import { defineConfig, type HeadConfig } from 'vitepress'
+import { transformSitemapItems } from './sitemap.mts'
 
 const siteUrl = (process.env.SITE_URL || 'https://bro-know-my.org').replace(/\/$/, '')
 
@@ -8,6 +9,12 @@ function pageUrl(relativePath: string): string {
     .replace(/\.md$/, '')
 
   return new URL(route, `${siteUrl}/`).toString()
+}
+
+function isArticlePage(relativePath: string, listed: unknown): boolean {
+  return listed !== false
+    && /^(?:blog|tutorials|docs)\//.test(relativePath)
+    && !/(^|\/)index\.md$/.test(relativePath)
 }
 
 export default defineConfig({
@@ -22,9 +29,7 @@ export default defineConfig({
   lastUpdated: true,
   sitemap: {
     hostname: siteUrl,
-    transformItems: (items) => items.filter(
-      (item) => !/(^|\/)(?:404|blog\/archive\/old-site-links)(?:\.html)?$/.test(item.url),
-    ),
+    transformItems: transformSitemapItems,
   },
   head: [
     ['meta', { name: 'theme-color', content: '#4b0082' }],
@@ -121,10 +126,11 @@ export default defineConfig({
       ? 'BKMPG'
       : pageData.frontmatter.title || pageData.title || 'BKMPG'
     const description = pageData.frontmatter.description || 'Linux、VPS、开发工具与 AI 工具的实践笔记。'
+    const ogType = isArticlePage(pageData.relativePath, pageData.frontmatter.listed) ? 'article' : 'website'
 
     return [
       ['link', { rel: 'canonical', href: canonical }],
-      ['meta', { property: 'og:type', content: pageData.frontmatter.layout === 'home' ? 'website' : 'article' }],
+      ['meta', { property: 'og:type', content: ogType }],
       ['meta', { property: 'og:locale', content: 'zh_CN' }],
       ['meta', { property: 'og:title', content: title }],
       ['meta', { property: 'og:description', content: description }],
