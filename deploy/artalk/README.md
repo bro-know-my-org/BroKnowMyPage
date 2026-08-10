@@ -76,7 +76,28 @@ sudo certbot renew --dry-run
 curl -fsS https://comment.bro-know-my.org/api/v2/version
 ```
 
-当前 vultr-jp 已完成正式部署：HTTP 自动跳转 HTTPS，Let's Encrypt 自动续期 dry-run 通过。Certbot 账号最初使用无邮箱模式注册；后续有稳定运维邮箱时，应使用 `certbot update_account --email 你的邮箱` 补上证书到期通知地址。
+将评论域名接入 Cloudflare 代理前，先安装真实访客 IP snippet：
+
+```bash
+sudo cp nginx/cloudflare-real-ip.conf /etc/nginx/snippets/cloudflare-real-ip.conf
+```
+
+并在评论域名的 HTTPS `server` 块中加入：
+
+```nginx
+include /etc/nginx/snippets/cloudflare-real-ip.conf;
+```
+
+反向代理使用解析后的地址，不继续拼接客户端可控的 `X-Forwarded-For`：
+
+```nginx
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $remote_addr;
+```
+
+Cloudflare 官方代理 IP 段发生变化时，应同步更新 snippet、运行 `nginx -t` 并安全 reload。未安装该配置前不要把评论域名切成橙云，否则 Artalk 日志、频控和审核记录会把 Cloudflare 节点当成访客 IP。
+
+当前 vultr-jp 已完成正式部署：HTTP 自动跳转 HTTPS，Let's Encrypt 自动续期 dry-run 通过。评论域名已接入 Cloudflare，缓存状态保持 `DYNAMIC`，源站继续返回 `Cache-Control: no-store`；Nginx 已验证能够恢复真实访客 IPv4/IPv6。Certbot 账号最初使用无邮箱模式注册；后续有稳定运维邮箱时，应使用 `certbot update_account --email 你的邮箱` 补上证书到期通知地址。
 
 不要把 `23366` 或 PostgreSQL 的 `5432` 开放到公网。若服务器原有程序占用 `80/443`，应先备份配置、把它安全迁移到其他端口并完成可用性验证，再让 Nginx 接管端口。
 

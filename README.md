@@ -121,8 +121,8 @@ tags:
 
 1. Pages Source 使用 `GitHub Actions`；
 2. Actions Variables 配置 `SITE_URL=https://bro-know-my.org`、`VITE_ARTALK_SERVER=https://comment.bro-know-my.org` 和 `VITE_ARTALK_SITE=兄弟懂我的页面`；
-3. 自定义域名为 `bro-know-my.org`，HTTPS 已启用，当前以 DNS-only 直连 GitHub Pages；
-4. 后续开启 Cloudflare 代理时，静态资源允许缓存，评论 API、管理入口和 OAuth 回调必须绕过缓存。
+3. 自定义域名为 `bro-know-my.org`，HTTPS 已启用，Cloudflare 使用 `Full (strict)` 代理主站；
+4. 页面边缘缓存 10 分钟，带哈希的 `/assets/` 资源缓存一年；评论域名整站绕过缓存并保留源站 `no-store`。
 
 工作流位于 `.github/workflows/deploy-pages.yml`。每次部署都对应一个 Git commit；需要回滚时，revert 问题 commit 或重新运行目标 commit 对应的工作流。
 
@@ -132,7 +132,7 @@ GitHub 默认 Pages 地址 `https://bro-know-my-org.github.io/BroKnowMyPage/` �
 
 服务器侧样例和备份恢复步骤见 [`deploy/artalk/README.md`](deploy/artalk/README.md)。GitHub OAuth Secret、Artalk App Key 和数据库密码只留在 VPS 的 `deploy/artalk/.env`，不得进入仓库或 Actions Variables。
 
-生产实例已部署在 vultr-jp，并通过 `https://comment.bro-know-my.org` 提供服务。HTTPS、CORS、管理员、验证码频控和轻量垃圾规则已经验证；PostgreSQL 不开放公网端口。GitHub OAuth 已恢复，匿名和 Email 登录均关闭；登录用户的正常评论直接公开，命中垃圾关键词时才进入待审。评论、回复、点赞、登录、删除和通知流程已完成测试。首次数据库备份已加密保存到服务器之外；当前不要求恢复演练。
+生产实例已部署在 vultr-jp，并通过 `https://comment.bro-know-my.org` 提供服务。评论域名已接入 Cloudflare，整站绕过缓存；Nginx 只信任 Cloudflare 官方代理网段提供的真实访客 IP。HTTPS、CORS、管理员、验证码频控和轻量垃圾规则已经验证；PostgreSQL 不开放公网端口。GitHub OAuth 已恢复，匿名和 Email 登录均关闭；登录用户的正常评论直接公开，命中垃圾关键词时才进入待审。评论、回复、点赞、登录、删除和通知流程已完成测试。首次数据库备份已加密保存到服务器之外；当前不要求恢复演练。
 
 ## hello-happy.world 静态镜像
 
@@ -143,7 +143,7 @@ VitePress 构建产物已通过 Actions 完成正式原子发布；`current` 指
 ## 后续工作
 
 - GitHub Pages 与 hny-jp 两条 Actions 发布链路已验证，后续增加构建或部署失败提醒；
-- `bro-know-my.org` 当前以 DNS-only 运行，后续配置 Cloudflare 缓存和安全规则后再评估是否开启代理；
+- 主站与评论域名已接入 Cloudflare；后续根据真实流量决定是否增加自定义 WAF 和接口限流规则；
 - Artalk 评论、回复、点赞、登录、删除和通知流程已完成测试；
 - 评论数据库已有 VPS 外加密备份；
 - 根据实际文章补充图片与站点图标；
