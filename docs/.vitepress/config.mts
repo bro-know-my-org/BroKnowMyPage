@@ -22,7 +22,9 @@ export default defineConfig({
   lastUpdated: true,
   sitemap: {
     hostname: siteUrl,
-    transformItems: (items) => items.filter((item) => !/(^|\/)404(?:\.html)?$/.test(item.url)),
+    transformItems: (items) => items.filter(
+      (item) => !/(^|\/)(?:404|blog\/archive\/old-site-links)(?:\.html)?$/.test(item.url),
+    ),
   },
   head: [
     ['meta', { name: 'theme-color', content: '#4b0082' }],
@@ -45,6 +47,7 @@ export default defineConfig({
       { text: '教程', link: '/tutorials/' },
       { text: '文档', link: '/docs/' },
       { text: '标签', link: '/tags' },
+      { text: '链接', link: '/links' },
     ],
     sidebar: {
       '/blog/': [
@@ -61,7 +64,6 @@ export default defineConfig({
             { text: 'PipeWire USB DAC 音量修复', link: '/blog/linux/pipewire-usb-dac-volume-fix' },
             { text: 'kitty 与 Codex 重复按键修复', link: '/blog/tools/kitty-codex-double-keypress-fix' },
             { text: 'Codex 自定义 API Provider', link: '/blog/tools/codex-custom-api-provider' },
-            { text: '旧站入口归档', link: '/blog/archive/old-site-links' },
           ],
         },
       ],

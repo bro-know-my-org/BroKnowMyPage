@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { data as articles, type Article } from '../../data/articles.data.mts'
 import Comments from './Comments.vue'
+import HomeFeatured from './home/HomeFeatured.vue'
 import HomeHero from './home/HomeHero.vue'
 import HomeRecent from './home/HomeRecent.vue'
 import type { HomeSection } from './home/types'
@@ -25,6 +26,7 @@ const recent = articles.slice(0, 5)
 <template>
   <div class="home-page">
     <HomeHero :sections="sections" />
+    <HomeFeatured />
     <HomeRecent :articles="recent" />
     <Comments />
   </div>
