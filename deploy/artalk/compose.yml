@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+
+  artalk:
+    image: artalk/artalk-go:2.10.0
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Shanghai
+      ATK_LOCALE: zh-CN
+      ATK_APP_KEY: ${ARTALK_APP_KEY}
+      ATK_SITE_DEFAULT: ${ARTALK_SITE}
+      ATK_SITE_URL: ${SITE_URL}
+      ATK_TRUSTED_DOMAINS: ${ARTALK_TRUSTED_DOMAINS}
+      ATK_DB_TYPE: pgsql
+      ATK_DB_HOST: postgres
+      ATK_DB_PORT: 5432
+      ATK_DB_NAME: ${POSTGRES_DB}
+      ATK_DB_USER: ${POSTGRES_USER}
+      ATK_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      ATK_HTTP_PROXY_HEADER: X-Forwarded-For
+      ATK_AUTH_ENABLED: ${ATK_AUTH_ENABLED:-false}
+      ATK_AUTH_ANONYMOUS: ${ATK_AUTH_ANONYMOUS:-false}
+      ATK_AUTH_EMAIL_ENABLED: ${ATK_AUTH_EMAIL_ENABLED:-false}
+      ATK_AUTH_CALLBACK: ${ATK_AUTH_CALLBACK:-}
+      ATK_AUTH_GITHUB_ENABLED: ${ATK_AUTH_GITHUB_ENABLED:-false}
+      ATK_AUTH_GITHUB_CLIENT_ID: ${ATK_AUTH_GITHUB_CLIENT_ID:-}
+      ATK_AUTH_GITHUB_CLIENT_SECRET: ${ATK_AUTH_GITHUB_CLIENT_SECRET:-}
+      ATK_MODERATOR_PENDING_DEFAULT: "false"
+      ATK_CAPTCHA_ENABLED: "true"
+      ATK_CAPTCHA_ALWAYS: "false"
+      ATK_CAPTCHA_ACTION_LIMIT: "3"
+      ATK_CAPTCHA_ACTION_RESET: "60"
+      ATK_MODERATOR_KEYWORDS_ENABLED: "true"
+      ATK_MODERATOR_KEYWORDS_PENDING: "true"
+      ATK_MODERATOR_KEYWORDS_FILES: /data/moderation-keywords.txt
+    volumes:
+      - ./data:/data
+    ports:
+      - "127.0.0.1:23366:23366"
+    networks: [backend]
+
+networks:
+  backend:

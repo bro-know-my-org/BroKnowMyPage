@@ -1,0 +1,101 @@
+name: Deploy VitePress to hny-jp
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hhw-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: hello-happy-world
+      url: https://hello-happy.world
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level high --registry=https://registry.npmjs.org
+
+      - name: Validate content and types
+        run: pnpm check:content && pnpm typecheck
+
+      - name: Build static site
+        run: pnpm build
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://bro-know-my.org' }}
+          VITE_ARTALK_SERVER: ${{ vars.VITE_ARTALK_SERVER || 'https://comment.bro-know-my.org' }}
+          VITE_ARTALK_SITE: ${{ vars.VITE_ARTALK_SITE || '兄弟懂我的页面' }}
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HNY_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.HNY_SSH_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Upload release
+        env:
+          DEPLOY_HOST: ${{ vars.HNY_SSH_HOST }}
+          DEPLOY_PORT: ${{ vars.HNY_SSH_PORT }}
+          DEPLOY_USER: ${{ vars.HNY_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.HNY_DEPLOY_ROOT }}
+          RELEASE_ID: ${{ github.sha }}
+        run: |
+          release_dir="$DEPLOY_ROOT/releases/$RELEASE_ID"
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "install -d -m 0755 '$release_dir'"
+          rsync -az --delete \
+            -e "ssh -p $DEPLOY_PORT" \
+            docs/.vitepress/dist/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:$release_dir/"
+
+      - name: Activate release
+        env:
+          DEPLOY_HOST: ${{ vars.HNY_SSH_HOST }}
+          DEPLOY_PORT: ${{ vars.HNY_SSH_PORT }}
+          DEPLOY_USER: ${{ vars.HNY_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.HNY_DEPLOY_ROOT }}
+          RELEASE_ID: ${{ github.sha }}
+        run: |
+          release_dir="$DEPLOY_ROOT/releases/$RELEASE_ID"
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "set -eu; \
+             test -f '$release_dir/index.html'; \
+             test -f '$release_dir/sitemap.xml'; \
+             ln -sfn '$release_dir' '$DEPLOY_ROOT/current.next'; \
+             mv -Tf '$DEPLOY_ROOT/current.next' '$DEPLOY_ROOT/current'"
+
+      - name: Verify public site
+        run: |
+          curl --fail --silent --show-error \
+            --retry 5 --retry-delay 2 \
+            https://hello-happy.world/ \
+            --output /dev/null
+          curl --fail --silent --show-error \
+            --retry 5 --retry-delay 2 \
+            https://hello-happy.world/sitemap.xml \
+            --output /dev/null
