@@ -13,8 +13,10 @@
     "build": "vitepress build docs && tsx scripts/generate-site-files.ts",
     "preview": "vitepress preview docs --port 55174",
     "check:content": "tsx scripts/check-content.ts",
+    "check:images": "tsx scripts/check-images.ts",
+    "image:optimize": "tsx scripts/optimize-images.ts",
     "typecheck": "vue-tsc --noEmit",
-    "check": "pnpm check:content && pnpm typecheck && vitepress build docs"
+    "check": "pnpm check:content && pnpm check:images && pnpm typecheck && vitepress build docs"
   },
   "dependencies": {
     "artalk": "^2.10.0",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "sharp": "^0.35.3",
     "tsx": "^4.23.11",
     "typescript": "^5.9.3",
     "vite": "6.4.3",

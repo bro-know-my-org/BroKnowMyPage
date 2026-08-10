@@ -47,6 +47,7 @@ pnpm dev
 ```bash
 pnpm dev            # 本地开发
 pnpm check:content  # 检查元数据、URL 和常见敏感凭据
+pnpm check:images   # 检查图片体积、宽度、元数据、alt 和本地路径
 pnpm typecheck      # TypeScript / Vue 类型检查
 pnpm check          # 完整检查并执行一次 VitePress 构建
 pnpm build          # 生产构建，并生成 RSS 与 robots.txt
@@ -54,6 +55,17 @@ pnpm preview        # 预览生产构建
 ```
 
 生产构建输出位于 `docs/.vitepress/dist`。
+
+## 文章图片
+
+图片放在对应文章旁边并使用相对路径，让 Vite 生成带哈希的 `/assets/` 文件；不要把普通文章图片放进 `docs/public`。JPG 或 PNG 可以转换为 WebP：
+
+```bash
+pnpm image:optimize docs/blog/某篇文章/images/截图.png --lossless
+pnpm image:optimize docs/blog/某篇文章/images/照片.jpg --quality=80
+```
+
+UI 截图使用 `--lossless`，照片使用默认有损模式。脚本默认限制宽度为 1920px、移除 EXIF/GPS 等元数据、保留原图并拒绝覆盖已有 WebP；确认 Markdown 已改用生成文件后，再人工删除不需要提交的原图。完整检查会拦截超过 500 KiB、宽度超过 1920px、残留隐私元数据、缺少 alt 或路径不存在的图片。
 
 ## 部署拓扑
 
