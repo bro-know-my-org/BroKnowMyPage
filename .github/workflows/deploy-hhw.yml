@@ -1,4 +1,4 @@
-name: Deploy VitePress to hny-jp
+name: Deploy VitePress mirror
 
 on:
   push:

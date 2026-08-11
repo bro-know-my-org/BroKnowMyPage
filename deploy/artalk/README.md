@@ -97,7 +97,7 @@ proxy_set_header X-Forwarded-For $remote_addr;
 
 Cloudflare 官方代理 IP 段发生变化时，应同步更新 snippet、运行 `nginx -t` 并安全 reload。未安装该配置前不要把评论域名切成橙云，否则 Artalk 日志、频控和审核记录会把 Cloudflare 节点当成访客 IP。
 
-当前 vultr-jp 已完成正式部署：HTTP 自动跳转 HTTPS，Let's Encrypt 自动续期 dry-run 通过。评论域名已接入 Cloudflare，缓存状态保持 `DYNAMIC`，源站继续返回 `Cache-Control: no-store`；Nginx 已验证能够恢复真实访客 IPv4/IPv6。Certbot 账号最初使用无邮箱模式注册；后续有稳定运维邮箱时，应使用 `certbot update_account --email 你的邮箱` 补上证书到期通知地址。
+当前评论服务器已完成正式部署：HTTP 自动跳转 HTTPS，Let's Encrypt 自动续期 dry-run 通过。评论域名已接入 Cloudflare，缓存状态保持 `DYNAMIC`，源站继续返回 `Cache-Control: no-store`；Nginx 已验证能够恢复真实访客 IPv4/IPv6。Certbot 账号最初使用无邮箱模式注册；后续有稳定运维邮箱时，应使用 `certbot update_account --email 你的邮箱` 补上证书到期通知地址。
 
 不要把 `23366` 或 PostgreSQL 的 `5432` 开放到公网。若服务器原有程序占用 `80/443`，应先备份配置、把它安全迁移到其他端口并完成可用性验证，再让 Nginx 接管端口。
 
@@ -109,7 +109,7 @@ Cloudflare 官方代理 IP 段发生变化时，应同步更新 snippet、运行
 
 ## 5. 站点与登录
 
-当前管理员已经创建，生成密码只保存在 vultr-jp 的 `/root/bkm-artalk-admin-credentials.env`，权限为 `600 root:root`，不进入仓库或聊天记录。首次登录后应把占位管理员邮箱改成实际可接收通知的地址，并妥善轮换密码。
+当前管理员已经创建，生成密码只保存在评论服务器的 `/root/bkm-artalk-admin-credentials.env`，权限为 `600 root:root`，不进入仓库或聊天记录。首次登录后应把占位管理员邮箱改成实际可接收通知的地址，并妥善轮换密码。
 
 评论策略为必须登录后才能发布；普通登录用户的正常评论直接公开，命中轻量垃圾关键词规则的评论仍进入待审核。渐进式图片验证码频控继续保留。评论、嵌套回复、点赞、登录、退出、删除和通知流程已完成测试。
 
@@ -160,7 +160,7 @@ docker compose exec -T postgres pg_dump \
   > "backups/artalk-$(date +%Y%m%d-%H%M%S).dump"
 ```
 
-vultr-jp 已完成首次 custom-format `pg_dump`，并通过 `pg_restore --list` 验证目录可读。服务器内备份只是第一层保护；仍需将备份加密后复制到另一台机器或本地存储。
+评论服务器已完成首次 custom-format `pg_dump`，并通过 `pg_restore --list` 验证目录可读。服务器内备份只是第一层保护；仍需将备份加密后复制到另一台机器或本地存储。
 
 首次备份已经使用 GnuPG AES-256 对称加密后复制到本地，明文临时文件在解密校验成功后删除。加密文件与随机密钥分开保存；密钥不得进入仓库，后续还应复制到密码管理器或另一处离线介质，避免本机磁盘故障时备份和密钥同时丢失。
 

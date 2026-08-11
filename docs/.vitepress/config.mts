@@ -92,6 +92,12 @@ export default defineConfig({
             { text: '斜杠命令', link: '/docs/codex/slash-commands' },
           ],
         },
+        {
+          text: '站点维护',
+          items: [
+            { text: '如何写文章', link: '/docs/site/writing' },
+          ],
+        },
       ],
     },
     search: {

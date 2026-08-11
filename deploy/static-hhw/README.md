@@ -1,6 +1,6 @@
 # hello-happy.world 静态镜像
 
-`hello-happy.world` 由 hny-jp 的 Nginx 直接提供 VitePress 构建产物。它是 `bro-know-my.org` 的静态镜像，不使用 301 跳转，也不在请求时回源 GitHub Pages。
+`hello-happy.world` 由静态镜像服务器的 Nginx 直接提供 VitePress 构建产物。它是 `bro-know-my.org` 的静态镜像，不使用 301 跳转，也不在请求时回源 GitHub Pages。
 
 当前运维状态（2026-08-10）：Actions 正式发布已成功完成，`current` 指向最近一次成功部署的 `main` commit release。施工页源码位于 [`maintenance/index.html`](maintenance/index.html)，施工页和旧 release 继续保留用于应急切换与回滚。
 
@@ -39,19 +39,19 @@ pnpm typecheck
 
 ## 手工发布
 
-以下步骤只用于工作流不可用时的应急发布。
+以下步骤只用于工作流不可用时的应急发布。示例使用 `mirror-host` 作为本机 SSH Config 中的服务器别名，执行前需要替换或配置为实际主机。
 
 为本次发布选择一个不重复的 `release_id`：
 
 ```bash
 release_id=20260809-vitepress-01
 
-ssh hny-jp "install -d -m 0755 /opt/bro-know-my-page/releases/$release_id"
+ssh mirror-host "install -d -m 0755 /opt/bro-know-my-page/releases/$release_id"
 rsync -az --delete \
   docs/.vitepress/dist/ \
-  "hny-jp:/opt/bro-know-my-page/releases/$release_id/"
+  "mirror-host:/opt/bro-know-my-page/releases/$release_id/"
 
-ssh hny-jp \
+ssh mirror-host \
   "ln -sfn /opt/bro-know-my-page/releases/$release_id /opt/bro-know-my-page/current && \
    nginx -t && systemctl reload nginx"
 ```
@@ -74,14 +74,14 @@ curl -fsS https://hello-happy.world/rss.xml -o /dev/null
 先查看当前和历史 release：
 
 ```bash
-ssh hny-jp 'readlink -f /opt/bro-know-my-page/current; ls -1 /opt/bro-know-my-page/releases'
+ssh mirror-host 'readlink -f /opt/bro-know-my-page/current; ls -1 /opt/bro-know-my-page/releases'
 ```
 
 确认目标后切换软链接：
 
 ```bash
 rollback_release=替换为已验证的历史目录名
-ssh hny-jp \
+ssh mirror-host \
   "ln -sfn /opt/bro-know-my-page/releases/$rollback_release /opt/bro-know-my-page/current && \
    nginx -t && systemctl reload nginx"
 ```

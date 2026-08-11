@@ -1,6 +1,6 @@
 # BKMPG
 
-一个以 Markdown 为唯一内容源的个人博客、教程与技术文档站。正文由 VitePress 静态构建，GitHub Pages 承载主站，`hny-jp` 承载国内优化静态镜像；评论通过 `vultr-jp` 上独立部署的 Artalk 提供。
+一个以 Markdown 为唯一内容源的个人博客、教程与技术文档站。正文由 VitePress 静态构建，GitHub Pages 承载主站，独立服务器承载静态镜像；评论通过另一台服务器上独立部署的 Artalk 提供。
 
 ## 当前已落地
 
@@ -11,7 +11,7 @@
 - 本地全文搜索、代码高亮、目录、暗色模式和响应式布局；
 - Sitemap、RSS、canonical、Open Graph 和 robots.txt；
 - 首页留言和文章评论均由 Artalk 提供，按接近视口时懒加载，未配置或不可用时不影响页面内容；
-- GitHub Actions 内容检查、类型检查、构建、Pages 发布与 hny-jp 原子镜像发布；
+- GitHub Actions 内容检查、类型检查、构建、Pages 发布与静态镜像原子发布；
 - `hello-happy.world` 的 Nginx 静态镜像、原子发布和回滚目录；
 - Artalk + PostgreSQL Compose、Nginx 及 Certbot 配置样例；
 - frontmatter 完整性和常见敏感凭据扫描。
@@ -74,13 +74,13 @@ bro-know-my.org
 └── GitHub Pages：主站与 canonical 来源
 
 hello-happy.world
-└── hny-jp / Nginx：同一份 VitePress 静态构建，作为国内优化镜像
+└── 静态镜像服务器 / Nginx：同一份 VitePress 静态构建，作为国内优化镜像
 
 comment.bro-know-my.org
-└── vultr-jp / Nginx → Artalk 127.0.0.1:23366 → PostgreSQL
+└── 评论服务器 / Nginx → Artalk 127.0.0.1:23366 → PostgreSQL
 ```
 
-两个静态入口共享 Markdown 内容，但 canonical、Sitemap 和 RSS 统一使用 `https://bro-know-my.org`，避免镜像产生重复收录。评论数据始终只写入 vultr-jp 上的一套 Artalk 和 PostgreSQL。
+两个静态入口共享 Markdown 内容，但 canonical、Sitemap 和 RSS 统一使用 `https://bro-know-my.org`，避免镜像产生重复收录。评论数据始终只写入评论服务器上的一套 Artalk 和 PostgreSQL。
 
 ## 内容结构
 
@@ -115,6 +115,8 @@ tags:
 - 教程面向明确目标，重点是“读者如何从零完成”，不要求读者重走原作者的排查过程；
 - 文档用于稳定、结构化、方便快速查找的参考资料。
 
+从选分类、填写 frontmatter、处理图片到本地检查的完整流程，见 [如何给 BKMPG 写文章](docs/docs/site/writing.md)。
+
 ## 环境变量
 
 | 变量 | 用途 | 未设置时 |
@@ -129,7 +131,7 @@ tags:
 
 ## GitHub Pages 上线
 
-仓库 `origin` 使用 SSH 地址。首次发布已于 2026-08-10 完成，GitHub Pages 与 hny-jp 两条工作流均已成功执行。当前配置为：
+仓库 `origin` 使用 SSH 地址。首次发布已于 2026-08-10 完成，GitHub Pages 与静态镜像两条工作流均已成功执行。当前配置为：
 
 1. Pages Source 使用 `GitHub Actions`；
 2. Actions Variables 配置 `SITE_URL=https://bro-know-my.org`、`VITE_ARTALK_SERVER=https://comment.bro-know-my.org` 和 `VITE_ARTALK_SITE=兄弟懂我的页面`；
@@ -144,17 +146,17 @@ GitHub 默认 Pages 地址 `https://bro-know-my-org.github.io/BroKnowMyPage/` �
 
 服务器侧样例和备份恢复步骤见 [`deploy/artalk/README.md`](deploy/artalk/README.md)。GitHub OAuth Secret、Artalk App Key 和数据库密码只留在 VPS 的 `deploy/artalk/.env`，不得进入仓库或 Actions Variables。
 
-生产实例已部署在 vultr-jp，并通过 `https://comment.bro-know-my.org` 提供服务。评论域名已接入 Cloudflare，整站绕过缓存；Nginx 只信任 Cloudflare 官方代理网段提供的真实访客 IP。HTTPS、CORS、管理员、验证码频控和轻量垃圾规则已经验证；PostgreSQL 不开放公网端口。GitHub OAuth 已恢复，匿名和 Email 登录均关闭；登录用户的正常评论直接公开，命中垃圾关键词时才进入待审。评论、回复、点赞、登录、删除和通知流程已完成测试。首次数据库备份已加密保存到服务器之外；当前不要求恢复演练。
+生产实例已部署在评论服务器，并通过 `https://comment.bro-know-my.org` 提供服务。评论域名已接入 Cloudflare，整站绕过缓存；Nginx 只信任 Cloudflare 官方代理网段提供的真实访客 IP。HTTPS、CORS、管理员、验证码频控和轻量垃圾规则已经验证；PostgreSQL 不开放公网端口。GitHub OAuth 已恢复，匿名和 Email 登录均关闭；登录用户的正常评论直接公开，命中垃圾关键词时才进入待审。评论、回复、点赞、登录、删除和通知流程已完成测试。首次数据库备份已加密保存到服务器之外；当前不要求恢复演练。
 
 ## hello-happy.world 静态镜像
 
-`hello-happy.world` 不跳转或整站反代 GitHub Pages，而是直接从 hny-jp 的 Nginx 提供构建产物。发布、验证与回滚步骤见 [`deploy/static-hhw/README.md`](deploy/static-hhw/README.md)。旧版动态博客已经归档并停止，其原 `/api/` 返回 `410 Gone`；服务器上的其他管理路由和子域服务保持独立。
+`hello-happy.world` 不跳转或整站反代 GitHub Pages，而是直接从静态镜像服务器的 Nginx 提供构建产物。发布、验证与回滚步骤见 [`deploy/static-hhw/README.md`](deploy/static-hhw/README.md)。旧版动态博客已经归档并停止，其原 `/api/` 返回 `410 Gone`；服务器上的其他管理路由和子域服务保持独立。
 
 VitePress 构建产物已通过 Actions 完成正式原子发布；`current` 指向最近一次成功部署的 `main` commit release。独立施工页与上一版 release 仍保留用于应急切换。
 
 ## 后续工作
 
-- GitHub Pages 与 hny-jp 两条 Actions 发布链路已验证，后续增加构建或部署失败提醒；
+- GitHub Pages 与静态镜像两条 Actions 发布链路已验证，后续增加构建或部署失败提醒；
 - 主站与评论域名已接入 Cloudflare；后续根据真实流量决定是否增加自定义 WAF 和接口限流规则；
 - Artalk 评论、回复、点赞、登录、删除和通知流程已完成测试；
 - 评论数据库已有 VPS 外加密备份；
