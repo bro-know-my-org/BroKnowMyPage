@@ -2,7 +2,7 @@
 title: Codex TUI 斜杠命令速查
 description: Codex TUI 会话、配置、调试和 Agent 相关斜杠命令速查。
 date: 2026-08-06
-updated: 2026-08-10
+updated: 2026-08-28
 tags:
   - Codex
   - 命令
@@ -11,7 +11,9 @@ tags:
 
 # Codex TUI 斜杠命令速查
 
-> 已按 `codex-cli 0.147.0` 的 TUI 命令菜单和实际命令复核。在输入框直接打 `/` 会弹出命令列表；插件、技能等还可以带来额外命令。
+> 已按 `codex-cli 0.149.1` 的 TUI 命令定义复核。在输入框直接打 `/` 会弹出命令列表；插件、技能等还可以带来额外命令。
+>
+> 2026-08-28 的 `main`（`7d6f808b`）还新增了 `/recap`，但它尚未包含在 `0.149.1` 发布包中；下面单独标为“当前 main”。
 
 ## 会话管理
 
@@ -25,11 +27,13 @@ tags:
 | `/delete` | 永久删除当前会话并退出 | 不可恢复 |
 | `/rename [新名字]` | 重命名当前线程 | |
 | `/app` | 在当前桌面 App 里继续这个会话 | 仅 macOS / Windows 可用 |
-| `/agent`、`/subagents` | 切换当前活动的 agent 线程 | 两者作用相同 |
+| `/agents` | 查看并切换 app-server 中的所有活动 Agent 会话 | 可跨当前会话查看 |
+| `/subagents` | 切换当前会话的子 Agent 线程 | 只看本会话的子 Agent |
 | `/side [内容]`、`/btw [内容]` | 开一个临时 fork 的侧边对话 | 带参数会直接把内容发给侧边对话 |
 | `/goal [目标\|clear\|edit\|pause\|resume]` | 查看、设置或控制长期任务目标 | 例：`/goal 提升测试覆盖率`、`/goal pause` |
 | `/plan [任务]` | 切换到 Plan 模式并开始规划 | |
 | `/compact` | 总结当前对话，压缩上下文 | |
+| `/recap` | 立即生成当前会话摘要 | 当前 `main`，`0.149.1` 尚未发布 |
 | `/quit`、`/exit` | 退出 Codex | 两者作用相同 |
 | `/logout` | 登出 Codex | |
 
@@ -41,11 +45,14 @@ tags:
 | `/diff` | 显示 git diff（包含未跟踪文件） | 非 git 仓库会提示 |
 | `/mention` | 在输入框插入 `@` 引用文件 | |
 | `/copy` | 把上一条回复复制为 Markdown | |
+| `/export [路径]` | 把整段对话导出为 Markdown | 不给路径时会引导选择文件名 |
 | `/raw [on\|off]` | 切换原始滚动模式，方便终端选中复制 | |
 | `/init` | 生成 `AGENTS.md` 项目指令文件 | |
 | `/ide [on\|off\|status]` | 开启 / 关闭 / 查看 IDE 上下文 | 会带入当前选中内容和打开的标签页 |
 | `/import` | 从 Claude Code 导入配置、项目和最近会话 | |
 | `/status` | 查看当前会话配置和 token 用量 | |
+| `/cd [目录]` | 更改当前工作目录 | 任务运行时不可用 |
+| `/pwd`、`/cwd` | 显示当前工作目录 | 两者作用相同 |
 | `/usage [daily\|weekly\|cumulative]` | 查看账户用量，或使用用量重置 | |
 | `/debug-config` | 查看配置分层和来源，排查配置问题 | |
 | `/rollout` | 打印当前 rollout 文件路径 | 仅调试构建显示 |

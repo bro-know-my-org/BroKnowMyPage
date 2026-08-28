@@ -2,7 +2,7 @@
 title: Codex CLI 命令与参数速查
 description: Codex CLI 全局参数、子命令和常用调用方式的中文速查。
 date: 2026-08-06
-updated: 2026-08-10
+updated: 2026-08-28
 tags:
   - Codex
   - CLI
@@ -11,7 +11,7 @@ tags:
 
 # Codex CLI 命令与参数速查
 
-> 已按 `codex-cli 0.147.0` 的实际 `--help` 输出复核。每个子命令的完整参数都可以用 `codex <子命令> --help` 查看；其他版本可能不同。
+> 已按 `codex-cli 0.149.1` 的 CLI 定义复核。每个子命令的完整参数都可以用 `codex <子命令> --help` 查看；其他版本可能不同。
 
 ## 基本用法
 
@@ -34,7 +34,7 @@ codex [OPTIONS] <COMMAND> [ARGS]
 | `-p, --profile <NAME>` | 加载 `$CODEX_HOME/<NAME>.config.toml` |
 | `-s, --sandbox <MODE>` | `read-only` / `workspace-write` / `danger-full-access` |
 | `--approve-for-me` | 在 `workspace-write` 沙箱中由自动审查处理审批请求 |
-| `-a, --ask-for-approval <MODE>` | 审批模式：`untrusted` / `on-request` / `never`（交互式 TUI） |
+| `-a, --ask-for-approval <MODE>` | 审批模式：`on-request` / `never`（交互式 TUI） |
 | `-C, --cd <DIR>` | 指定工作目录 |
 | `--add-dir <DIR>` | 额外可写目录，可重复 |
 | `-c, --config <key=value>` | 覆盖任意配置项，可重复；值按 TOML 解析 |
@@ -62,6 +62,7 @@ codex -c 'shell_environment_policy.inherit=all'
 
 | 子命令 | 作用 |
 | --- | --- |
+| `agents` | 打开共享 app-server 上所有 Agent 会话的总览 |
 | `exec` | 非交互式运行 Codex |
 | `review` | 非交互式代码审查 |
 | `login` | 登录 / 查看登录状态 |
@@ -78,8 +79,10 @@ codex -c 'shell_environment_policy.inherit=all'
 | `sandbox` | 在 Codex 沙箱里执行命令 |
 | `apply <TASK_ID>` | 应用 Codex 任务最新生成的 diff |
 | `resume` | 恢复历史会话 |
+| `queue` | 给已有会话排队发送消息 |
 | `archive` | 归档会话 |
 | `delete` | 删除会话 |
+| `migrate-rollouts` | 检查或迁移旧版本地会话历史 |
 | `unarchive` | 取消归档 |
 | `fork` | 分叉历史会话 |
 | `cloud` | 实验性：Codex Cloud 任务 |
@@ -87,7 +90,7 @@ codex -c 'shell_environment_policy.inherit=all'
 | `features` | 查看 / 开启 / 关闭功能开关 |
 | `debug` | 调试工具 |
 
-还有几个隐藏的内部命令：`execpolicy`、`responses-api-proxy`、`stdio-to-uds`，日常不需要碰。
+还有几个隐藏的内部命令：`execpolicy`、`responses-api-proxy`、`stdio-to-uds`，日常不需要碰。`mcp-server` 已提示弃用，新集成应使用 `app-server`。
 
 ## `codex exec`：非交互模式
 
@@ -176,12 +179,16 @@ codex plugin marketplace remove <MARKETPLACE_NAME> [--json]
 ## 会话管理命令
 
 ```console
+codex agents [-C DIR] [--no-alt-screen]       # 打开跨会话 Agent 总览
 codex resume [SESSION_ID] [--last] [--all]
 codex resume --last PROMPT            # 恢复最近会话并直接发消息
+codex queue --thread <SESSION> --message <TEXT>  # 给已有会话排队发送消息
 codex fork [SESSION_ID] [--last] [--all]
 codex archive <SESSION>
 codex unarchive <SESSION>
 codex delete <SESSION> [--force]      # --force 必须传 UUID
+codex migrate-rollouts                # 只检查可迁移的旧会话
+codex migrate-rollouts --apply        # 实际执行迁移
 ```
 
 ## 其他子命令
@@ -208,6 +215,7 @@ codex remote-control start|stop|pair [--json]
 ```console
 codex exec-server [--listen URL]
 codex exec-server --remote URL --environment-id ID [--name NAME] [--use-agent-identity-auth]
+codex exec-server --remote URL --environment-id ID forward --connect WS_URL
 ```
 
 ### `codex cloud`

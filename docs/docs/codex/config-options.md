@@ -1,17 +1,17 @@
 ---
-title: Codex TUI 可自定义配置项速查
-description: Codex TUI 配置分层、模型、权限、界面和外部集成配置项速查。
+title: Codex 可自定义配置项速查
+description: Codex CLI 与 Desktop App 的配置分层、模型、鉴权、权限、界面和外部集成配置项速查。
 date: 2026-08-06
-updated: 2026-08-10
+updated: 2026-08-28
 tags:
   - Codex
   - 配置
   - AI 工具
 ---
 
-# Codex TUI 可自定义配置项速查
+# Codex 可自定义配置项速查
 
-> 已按 `codex-cli 0.147.0` 复核，文末完整示例已通过 `--strict-config` 解析检查。完整字段以当前版本的配置架构为准，运行中的配置分层可用 `/debug-config` 查看。
+> 已按 `rust-v0.149.1`（`ff29a443`）和 2026-08-28 的 Codex `main`（`7d6f808b`）复核。文末完整示例已通过 `--strict-config` 解析检查。完整字段以[当前配置架构](https://github.com/openai/codex/blob/7d6f808b97e424da80271be8cc539e8c5437a229/codex-rs/core/config.schema.json)为准，运行中的配置分层可用 `/debug-config` 查看。
 
 ## 配置文件放在哪
 
@@ -49,11 +49,42 @@ tags:
 | `model_catalog_json` | 启动时加载的 JSON 模型目录 |
 | `oss_provider` | 本地模型首选 provider，如 `lmstudio`、`ollama` |
 
+### 自定义 provider：0.149.x 后要明确鉴权来源
+
+`model_providers.<id>.requires_openai_auth` 表示这个 provider 是否复用 Codex 保存在 `auth.json`（或系统凭据存储）里的 OpenAI API Key / ChatGPT 登录令牌。它的默认值仍是 `false`，但 0.149.x 开始，自定义 provider 不再自动继承当前 Codex 登录的鉴权头；0.149.1 的实现会在 `requires_openai_auth = false` 且 provider 未通过 `env_key`、固定 bearer token 或命令取 token 等方式显式鉴权时选择“无鉴权” provider（[实现](https://github.com/openai/codex/blob/e13c1d569d953ecac06a09cf5663fb3cd405636d/codex-rs/model-provider/src/auth.rs#L197-L218)、[回归测试](https://github.com/openai/codex/blob/e13c1d569d953ecac06a09cf5663fb3cd405636d/codex-rs/model-provider/src/auth.rs#L475-L494)）。
+
+因此，如果自定义 `base_url` 是 OpenAI / ChatGPT 的反向代理，并且上游要求收到当前 Codex 登录令牌，需要明确写：
+
+```toml
+model_provider = "openai-proxy"
+
+[model_providers.openai-proxy]
+name = "OpenAI via proxy"
+base_url = "https://proxy.example.com/v1"
+wire_api = "responses"
+requires_openai_auth = true
+```
+
+漏掉这一项时，请求可能不带 `Authorization`，代理或上游就会返回 `401 Unauthorized`。但不要给所有自定义 provider 都设成 `true`：
+
+- 第三方服务使用自己的 API Key：设置 `env_key`，让密钥来自指定环境变量。
+- provider 使用命令动态取 token：设置 `[model_providers.<id>.auth]`。
+- Ollama、LM Studio 或其他免鉴权本地服务：保留 `false`。
+- 只有要复用 Codex 的 OpenAI / ChatGPT 登录时，才设 `requires_openai_auth = true`。
+
+字段定义也明确说明了这一区别：`true` 使用 OpenAI API Key / ChatGPT 登录并保存登录状态；`false` 跳过登录，所需 API Key 由 `env_key` 提供（[0.149.1 源码](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/model-provider-info/src/lib.rs#L138-L143)、[生成的 schema](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/core/config.schema.json#L2003-L2006)）。
+
+### CLI 与 Desktop App 的影响边界
+
+CLI 和 Desktop App 在使用同一个 `CODEX_HOME` 时读取同一份用户级 `config.toml`；Desktop App 的后端通过 app-server 读取合并后的有效配置，也会把设置写回用户配置（[app-server 配置接口](https://github.com/openai/codex/blob/7d6f808b97e424da80271be8cc539e8c5437a229/codex-rs/app-server/README.md#L290-L295)）。所以同一个自定义 provider 在新版 Desktop App 中也可能因缺少 `requires_openai_auth = true` 而出现 401。
+
+不过，CLI 与 Desktop App 的程序版本并不由同一次升级绑定：升级 npm / Homebrew 的 CLI 不等于升级 Desktop App。是否触发新行为，要看各自实际使用的 Codex core / app-server 版本；改完 provider 配置后，建议分别重启 CLI 和 App，并新开会话验证。
+
 ### 权限与沙箱
 
 | 配置项 | 可选值 / 说明 |
 | --- | --- |
-| `approval_policy` | `untrusted`、`on-request`（默认）、`granular`、`never` |
+| `approval_policy` | `on-request`（默认）、`never`，或 `[approval_policy.granular]` 细粒度对象；0.149.1 已移除 `untrusted`（[schema](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/core/config.schema.json#L255-L285)） |
 | `approvals_reviewer` | `user`（默认）或 `auto_review`（旧名 `guardian_subagent`） |
 | `auto_review.policy` | 给自动审查 guardian 的额外策略说明 |
 | `allow_login_shell` | 是否允许 shell 工具使用 login shell，默认 `true` |
@@ -114,6 +145,9 @@ tags:
 | `hooks` | 生命周期钩子 |
 | `plugins`、`marketplaces` | 插件与市场配置 |
 | `features` | 集中式功能开关 |
+| `goals.max_goal_token_budget` | Goal 可用的最大 token budget，也是新 Goal 的默认 budget（[0.149.1 schema](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/core/config.schema.json#L1225-L1233)） |
+| `responses_api_metadata` | 附加到每个 Responses API 请求的产品元数据键值（[0.149.1 schema](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/core/config.schema.json#L6091-L6097)） |
+| `browser_use`、`computer_use` | 浏览器与桌面操作的访问策略（[当前 `main`](https://github.com/openai/codex/blob/7d6f808b97e424da80271be8cc539e8c5437a229/codex-rs/core/config.schema.json#L5678-L5703)，尚未随 0.149.1 发布） |
 | `profiles` | 命名配置档案 |
 | `profile` | 当前使用的档案名 |
 | `projects` | 按项目路径设置的信任级别等 |
@@ -158,7 +192,7 @@ notification_condition = "unfocused"      # unfocused / always
 
 按键写在对应上下文里，可以给一个键位或一组键位；空列表表示明确取消绑定。键位写法如 `"ctrl-a"`、`"alt-enter"`、`"shift-tab"`、`"escape"`、`"page-up"`。支持 F1–F24。
 
-上下文有：`global`、`chat`、`composer`、`editor`、`vim_normal`、`vim_operator`、`vim_text_object`、`pager`、`list`、`approval`。生效优先级：具体上下文 > `global` > 内置默认。
+上下文有：`global`、`chat`、`composer`、`editor`、`vim_normal`、`vim_operator`、`vim_text_object`、`pager`、`list`、`approval`、`agents`。其中 `agents` 是 0.149.1 新增的多代理总览快捷键上下文，包含 `new_task`、`rename`、`search`、`stop`、`toggle_grouping`（[schema](https://github.com/openai/codex/blob/ff29a44391deccde0aba0f8390337d7f3c319ea4/codex-rs/core/config.schema.json#L3789-L3831)）。生效优先级：具体上下文 > `global` > 内置默认。
 
 示例：
 

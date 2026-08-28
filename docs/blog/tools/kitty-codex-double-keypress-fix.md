@@ -2,7 +2,7 @@
 title: kitty 里 Codex 回车与退格重复触发的修复
 description: 排查 kitty keyboard protocol 导致 Codex TUI 按键被处理两次的问题，并给出三种修复方式。
 date: 2026-08-07
-updated: 2026-08-07
+updated: 2026-08-28
 tags:
   - kitty
   - Codex
@@ -13,6 +13,8 @@ tags:
 # kitty 里跑 Codex，回车/退格像被按了两次？
 
 > 环境：Kubuntu 24.04（Ubuntu noble）· kitty 0.32.2 · codex-cli 0.147.0
+
+> 版本复核：截至 `codex-cli 0.149.1`，Codex 对 kitty 仍会请求 `REPORT_EVENT_TYPES`，`CODEX_TUI_DISABLE_KEYBOARD_ENHANCEMENT` 开关也仍然有效，因此下面的成因和三种处理方式不变。
 
 ## 症状
 
