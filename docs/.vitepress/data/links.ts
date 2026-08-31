@@ -34,7 +34,6 @@ export const linkGroups: LinkGroup[] = [
         description: '自用，不开放，纯馋人。',
         featured: true,
         actions: [
-          { label: '打开中转站', href: 'https://newapi.hello-happy.world/' },
           { label: '查看 Codex 配置', href: '/blog/tools/codex-custom-api-provider' },
         ],
       },

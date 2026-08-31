@@ -2,7 +2,7 @@
 title: 使用自定义 API Provider 运行 Codex
 description: 给 Codex CLI 配置自建 OpenAI 兼容 API、独立令牌和 Responses 接口的简明步骤。
 date: 2026-04-23
-updated: 2026-08-28
+updated: 2026-08-31
 tags:
   - Codex
   - CLI
@@ -16,7 +16,7 @@ tags:
 
 ## 1. 创建独立令牌
 
-登录 [HHW API 控制台](https://newapi.hello-happy.world/)，在令牌管理中创建一个只给 Codex 使用的令牌。不要把令牌写进文章、Git 仓库、截图或聊天记录；不再使用时及时撤销。
+登录你所使用的 API 服务控制台，在令牌管理中创建一个只给 Codex 使用的令牌。不要把令牌写进文章、Git 仓库、截图或聊天记录；不再使用时及时撤销。
 
 ## 2. 安装 Codex CLI
 
@@ -77,12 +77,12 @@ preferred_auth_method = "apikey"
 
 [model_providers.hhw]
 name = "HHW"
-base_url = "https://newapi.hello-happy.world/v1"
+base_url = "https://api.example.com/v1"
 wire_api = "responses"
 requires_openai_auth = true
 ```
 
-这里的 `wire_api = "responses"` 表示服务端使用 Responses API 兼容接口。模型名必须是当前账号在控制台中实际可用的模型；如果服务端没有提供示例中的模型，就换成控制台列出的名称。
+示例中的 `base_url` 是占位地址，需要替换为自己所用服务的 API 地址。`wire_api = "responses"` 表示服务端使用 Responses API 兼容接口。模型名必须是当前账号在控制台中实际可用的模型；如果服务端没有提供示例中的模型，就换成控制台列出的名称。
 
 `requires_openai_auth = true` 同样不能省略。它不是说这个地址必须是 OpenAI 官方 API，而是告诉 Codex：这个 Provider 要使用 Codex 的登录凭据，也就是上一步保存在 `auth.json` 里的 API Key。该字段默认是 `false`；从 `codex-cli 0.149.0+` 开始，漏写后更容易出现请求没有带上这份凭据、服务端返回 `401 Unauthorized` 的情况。字段语义可对照 `0.149.1` 的 [ModelProviderInfo 源码](https://github.com/openai/codex/blob/rust-v0.149.1/codex-rs/model-provider-info/src/lib.rs#L139-L144)。
 
