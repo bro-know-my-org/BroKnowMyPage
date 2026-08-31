@@ -69,6 +69,7 @@ export default defineConfig({
             { text: 'PipeWire USB DAC 音量修复', link: '/blog/linux/pipewire-usb-dac-volume-fix' },
             { text: 'kitty 与 Codex 重复按键修复', link: '/blog/tools/kitty-codex-double-keypress-fix' },
             { text: 'Codex 自定义 API Provider', link: '/blog/tools/codex-custom-api-provider' },
+            { text: 'Tauri Runner 与 DMG 踩坑', link: '/blog/tools/tauri-github-actions-release-pitfalls' },
           ],
         },
       ],
