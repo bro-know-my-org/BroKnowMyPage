@@ -2,4 +2,5 @@ allowBuilds:
   esbuild: true
 
 overrides:
+  gray-matter>js-yaml: 3.15.2
   vite: 6.4.3
