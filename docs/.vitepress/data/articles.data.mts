@@ -2,6 +2,7 @@ import { createContentLoader } from 'vitepress'
 
 export interface Article {
   title: string
+  author: string
   description: string
   url: string
   date: string
@@ -19,6 +20,7 @@ export default createContentLoader('{blog,tutorials,docs}/**/*.md', {
       .filter(({ frontmatter }) => frontmatter.listed !== false)
       .map(({ url, frontmatter }) => ({
         title: String(frontmatter.title),
+        author: typeof frontmatter.author === 'string' ? frontmatter.author.trim() : '',
         description: String(frontmatter.description),
         url,
         date: new Date(frontmatter.date).toISOString(),

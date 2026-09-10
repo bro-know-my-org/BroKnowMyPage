@@ -20,6 +20,7 @@ const formatDate = (date: string) =>
         <span class="recent-item__main">
           <strong>{{ article.title }}</strong>
           <small>{{ article.description }}</small>
+          <small v-if="article.author">作者：{{ article.author }}</small>
         </span>
         <span class="recent-item__meta">
           <span>{{ article.section }}</span>

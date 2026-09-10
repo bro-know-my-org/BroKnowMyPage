@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: 使用自定义 API Provider 运行 Codex
 description: 给 Codex CLI 配置自建 OpenAI 兼容 API、独立令牌和 Responses 接口的简明步骤。
 date: 2026-04-23

@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: kitty 里 Codex 回车与退格重复触发的修复
 description: 排查 kitty keyboard protocol 导致 Codex TUI 按键被处理两次的问题，并给出三种修复方式。
 date: 2026-08-07

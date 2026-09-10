@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: Codex 可自定义配置项速查
 description: Codex CLI 与 Desktop App 的配置分层、模型、鉴权、权限、界面和外部集成配置项速查。
 date: 2026-08-06

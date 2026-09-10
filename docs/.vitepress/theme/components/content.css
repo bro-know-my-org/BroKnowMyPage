@@ -50,6 +50,7 @@
   gap: 6px 12px;
   color: var(--vp-c-text-3);
   font-size: 12px;
+  overflow-wrap: anywhere;
 }
 
 .tag-filter {
@@ -120,6 +121,12 @@
   flex: none;
   color: var(--vp-c-text-3);
   font-size: 12px;
+}
+
+.tag-results a span {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .not-found {

@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: PipeWire 下 USB DAC 音量到顶问题的排查与修复
 description: 从 ALSA 双音量控件定位 PipeWire 遗漏主音量的问题，并用 ACP 用户配置修复。
 date: 2026-08-05

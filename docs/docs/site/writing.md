@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: 如何给 BKMPG 写文章
 description: BKMPG 从选择分类、创建 Markdown、处理图片到本地检查和发布的完整写作流程。
 date: 2026-08-11
@@ -58,6 +59,7 @@ docs/docs/tools/example-reference.md
 ```yaml
 ---
 title: 文章标题
+author: 你的署名
 description: 一句话说明文章解决什么问题，不超过 160 个字符。
 date: 2026-08-11
 updated: 2026-08-11
@@ -68,6 +70,7 @@ tags:
 ```
 
 - `title` 是列表、搜索和浏览器标题使用的文章名。
+- `author` 填你希望公开展示的姓名或昵称，必须是非空字符串；文章列表、正文顶部和 RSS 都会显示此署名。
 - `description` 应直接说明内容，不写“本文将会介绍”之类的套话。
 - `date` 是首次发布日，后续修改文章时不要跟着改。
 - `updated` 是最后一次实质更新日期。
@@ -220,6 +223,16 @@ git diff --stat
 ```
 
 确认没有 `.env`、数据库备份、原始凭据或无关大文件后，再提交和推送。推送 `main` 会同时触发 GitHub Pages 与静态镜像两条 Actions。
+
+## 通过 PR 投稿
+
+1. Fork 本仓库，从 `main` 创建投稿分支。
+2. 按上面的目录和模板新增 Markdown，在 `author` 中填写自己的署名。
+3. 安装依赖（`pnpm install`），完成文章后运行 `pnpm check`。
+4. 提交文章和所需图片，向本仓库的 `main` 分支发起 Pull Request，简要说明文章内容和验证结果。
+5. 维护者审核并合并后，站点会自动构建发布。
+
+署名由投稿者填写，维护者在 PR 中核对。修改他人的文章时保留原作者署名；需要调整署名时，在 PR 中说明原因。
 
 ## 修改旧文章
 

@@ -98,6 +98,7 @@ docs/
 ```yaml
 ---
 title: 文章标题
+author: 你的署名
 description: 一句话摘要
 date: 2026-08-09
 updated: 2026-08-09
@@ -116,6 +117,8 @@ tags:
 - 文档用于稳定、结构化、方便快速查找的参考资料。
 
 从选分类、填写 frontmatter、处理图片到本地检查的完整流程，见 [如何给 BKMPG 写文章](docs/docs/site/writing.md)。
+
+欢迎通过 Pull Request 投稿：Fork 仓库后新增文章，在 `author` 中填写自己的姓名或昵称，运行 `pnpm check`，再向 `main` 分支提交 PR。维护者审核合并后自动发布。作者字段必填，修改他人文章时请保留原署名。
 
 ## 环境变量
 

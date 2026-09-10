@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: Codex CLI 命令与参数速查
 description: Codex CLI 全局参数、子命令和常用调用方式的中文速查。
 date: 2026-08-06

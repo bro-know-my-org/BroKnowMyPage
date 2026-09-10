@@ -5,6 +5,7 @@ import './style.css'
 import './components/content.css'
 import './components/comments.css'
 import ArticleList from './components/ArticleList.vue'
+import ArticleAuthor from './components/ArticleAuthor.vue'
 import Comments from './components/Comments.vue'
 import HomePage from './components/HomePage.vue'
 import LinkCatalog from './components/LinkCatalog.vue'
@@ -15,6 +16,7 @@ export default {
   extends: DefaultTheme,
   Layout: (): Component =>
     h(DefaultTheme.Layout, null, {
+      'doc-before': () => h(ArticleAuthor),
       'doc-after': () => h(Comments),
       'not-found': () => h(NotFound),
     }),

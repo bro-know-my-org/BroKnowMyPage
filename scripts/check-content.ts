@@ -42,6 +42,10 @@ for (const file of (await Promise.all(articleRoots.map(markdownFiles))).flat()) 
     if (!data[field]) report(file, `缺少 frontmatter.${field}`)
   }
 
+  if (typeof data.author !== 'string' || !data.author.trim()) {
+    report(file, 'frontmatter.author 必须是非空字符串，请填写作者署名')
+  }
+
   if (!Array.isArray(data.tags) || data.tags.length === 0) report(file, 'frontmatter.tags 必须是非空数组')
   if (Array.isArray(data.tags) && new Set(data.tags.map(String)).size !== data.tags.length) {
     report(file, 'frontmatter.tags 存在重复项')

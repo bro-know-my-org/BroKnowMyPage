@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: Codex TUI 斜杠命令速查
 description: Codex TUI 会话、配置、调试和 Agent 相关斜杠命令速查。
 date: 2026-08-06

@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: Codex TUI 快捷键速查
 description: Codex TUI 默认快捷键、文本编辑、Vim 模式和常用面板操作速查。
 date: 2026-08-06

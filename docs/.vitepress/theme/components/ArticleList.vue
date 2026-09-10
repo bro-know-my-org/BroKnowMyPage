@@ -32,7 +32,8 @@ const formatDate = (date: string) =>
         <strong class="article-row__title">{{ article.title }}</strong>
         <span class="article-row__description">{{ article.description }}</span>
         <span class="article-row__tags">
-        <span v-for="tag in article.tags" :key="tag">#{{ tag }}</span>
+          <span v-if="article.author">作者：{{ article.author }}</span>
+          <span v-for="tag in article.tags" :key="tag">#{{ tag }}</span>
         </span>
       </span>
     </a>

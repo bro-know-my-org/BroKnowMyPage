@@ -55,6 +55,7 @@ articles
       id: url,
       link: url,
       description: String(data.description || ''),
+      author: typeof data.author === 'string' && data.author.trim() ? [{ name: data.author.trim() }] : [],
       date: new Date(data.updated || data.date),
       category: Array.isArray(data.tags) ? data.tags.map((tag: unknown) => ({ name: String(tag) })) : [],
     })

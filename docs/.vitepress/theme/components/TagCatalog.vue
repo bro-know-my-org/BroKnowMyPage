@@ -44,7 +44,7 @@ const formatDate = (date: string) =>
     <li v-for="article in visibleArticles" :key="article.url">
       <a :href="article.url">
         <strong>{{ article.title }}</strong>
-        <span>{{ article.section }} · {{ formatDate(article.updated) }}</span>
+        <span><template v-if="article.author">作者：{{ article.author }} · </template>{{ article.section }} · {{ formatDate(article.updated) }}</span>
       </a>
     </li>
   </ul>

@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: Tauri 跨平台发布：迁移 macOS Runner 与容忍 DMG 偶发失败
 description: 记录 Tauri 项目因旧版 macOS Runner 停止支持而迁移，以及隔离 DMG 偶发失败的 GitHub Actions 调整。
 date: 2026-08-11
