@@ -2,7 +2,13 @@
 title: 日本 VPS 自建 VLESS + Reality 与 Cloudflare CDN 双线路
 description: 使用 VLESS + Reality 直连与 Cloudflare WebSocket TLS 线路互为兜底的完整部署记录。
 date: 2026-08-07
-updated: 2026-08-07
+updated: 2026-09-10
+listed: false
+search: false
+head:
+  - - meta
+    - name: robots
+      content: noindex
 tags:
   - VPS
   - VLESS

@@ -11,7 +11,7 @@ interface SitemapItemLike {
 }
 
 const docsRoot = resolve(import.meta.dirname, '..')
-const excludedRoutes = /(^|\/)(?:404|blog\/archive\/old-site-links)(?:\.html)?$/
+const excludedRoutes = /(^|\/)(?:404|blog\/archive\/old-site-links|tutorials\/vps\/vless-reality-cloudflare-cdn)(?:\.html)?$/
 
 async function markdownFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })

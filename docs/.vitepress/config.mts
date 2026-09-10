@@ -78,7 +78,6 @@ export default defineConfig({
           text: '教程',
           items: [
             { text: '教程索引', link: '/tutorials/' },
-            { text: 'VLESS + Reality 双线路', link: '/tutorials/vps/vless-reality-cloudflare-cdn' },
           ],
         },
       ],
