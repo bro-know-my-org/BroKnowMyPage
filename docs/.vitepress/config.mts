@@ -78,6 +78,7 @@ export default defineConfig({
           text: '教程',
           items: [
             { text: '教程索引', link: '/tutorials/' },
+            { text: '无公网 IP 远程访问 WebUI', link: '/tutorials/tools/cloudflare-tunnel-local-webui-access' },
           ],
         },
       ],
