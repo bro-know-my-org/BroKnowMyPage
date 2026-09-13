@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: R9000P 在 Linux 下只有 80W？把 NVIDIA Dynamic Boost 配起来
 description: R9000P 2021H 的 RTX 3060 在 Ubuntu 下显示 80W 上限，补齐 nvidia-powerd 服务与 D-Bus 权限后，实测上限升到 130W。
 date: 2026-09-06

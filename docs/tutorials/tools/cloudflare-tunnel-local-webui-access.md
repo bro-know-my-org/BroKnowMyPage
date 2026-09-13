@@ -1,4 +1,5 @@
 ---
+author: 假发
 title: 没有公网 IP，也能在外面打开家里的 WebUI
 description: 用 Cloudflare Tunnel 把本地 WebUI 或其他网页应用接到域名上，再通过 Access 限定登录身份，无需公网 IP 和路由器端口转发。
 date: 2026-09-13
