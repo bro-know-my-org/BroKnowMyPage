@@ -3,7 +3,7 @@ author: 假发
 title: R9000P 在 Linux 下只有 80W？把 NVIDIA Dynamic Boost 配起来
 description: R9000P 2021H 的 RTX 3060 在 Ubuntu 下显示 80W 上限，补齐 nvidia-powerd 服务与 D-Bus 权限后，实测上限升到 130W。
 date: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-15
 tags:
   - Linux
   - NVIDIA
@@ -15,7 +15,7 @@ tags:
 
 起因很简单：想看看自己的 N 卡是不是被限功耗了。一查，RTX 3060 Laptop GPU 的当前上限只有 **80W**，最大值却写着 **130W**。
 
-最后补齐 `nvidia-powerd` 服务和 D-Bus 权限，读数依次变成了 **80W → 115W → 130W**。这篇记录实际排查过程，以及可以复用的配置步骤。
+最初补齐 `nvidia-powerd` 服务和部分 D-Bus 权限后，读数依次变成了 **80W → 115W → 130W**。但 2026-09-15 复查发现，旧配置遗漏普通用户客户端的发送权限，导致认证日志累积到约 6.5 GiB。本文已修正配置步骤，并补充服务端与客户端的双向验证。
 
 先把结果的范围说清楚：这里验证的是**功耗上限恢复到 130W**，没有进行持续满载测试，也没有测游戏帧率提升。
 
@@ -133,17 +133,24 @@ Error setting up DBus connection
 
 ## 补上 D-Bus 配置
 
-本机没有找到对应的 NVIDIA D-Bus 策略文件。针对日志明确拒绝的 `nvidia.powerd.server`，为以 root 身份运行的服务添加最小配置。
+[NVIDIA 595.84 官方说明](https://download.nvidia.com/XFree86/Linux-x86_64/595.84/README/dynamicboost.html)要求安装驱动配套的 `nvidia-dbus.conf`。官方安装布局中的示例路径是 `/usr/share/doc/NVIDIA_GLX-1.0/nvidia-dbus.conf`；发行版打包路径可能不同，应优先使用发行版或同版本驱动提供的文件。
 
-下面的命令会写入指定文件，适用于该文件尚不存在的情况。如果已有配置，先检查内容；发行版自带的策略应优先使用。
+本机 Ubuntu 包没有安装这份策略。原文只为 root 添加了 `own` 和 `send_destination`，虽然解决了服务注册名称失败的问题，却遗漏了普通用户客户端。正确的权限区分是：**只有 root 能注册服务名称，普通用户可以向该服务发送消息**。不能把包含 `own` 的整段策略直接改成对所有用户开放。
+
+本次从 [595.84 官方驱动包](https://download.nvidia.com/XFree86/Linux-x86_64/595.84/NVIDIA-Linux-x86_64-595.84.run)提取 `nvidia-dbus.conf`，并通过安装包自带的 CRC 与 MD5 完整性校验。下面保留原文件内容；策略文件的 SHA-256 为 `67d5c6989ac21625db5a62984a0ecf0d55d241065c29c90a58bbbe63ad8f6a81`。本机沿用 `nvidia-powerd.conf` 文件名替换旧策略；D-Bus 会读取该目录中的 `.conf` 文件，名称无需与包内一致。
+
+文件已存在时先备份；如果发行版已经提供完整策略，应检查并使用它，避免重复维护两份配置。
 
 ```bash
+sudo cp -a /etc/dbus-1/system.d/nvidia-powerd.conf \
+  /etc/dbus-1/system.d/nvidia-powerd.conf.bak
 sudo tee /etc/dbus-1/system.d/nvidia-powerd.conf > /dev/null <<'EOF'
-<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
- "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
 <busconfig>
+  <type>system</type>
   <policy user="root">
     <allow own="nvidia.powerd.server"/>
+  </policy>
+  <policy context="default">
     <allow send_destination="nvidia.powerd.server"/>
   </policy>
 </busconfig>
@@ -153,32 +160,60 @@ sudo systemctl reload dbus
 sudo systemctl restart nvidia-powerd
 ```
 
-这里重新加载 D-Bus 配置即可，不需要重启整个 D-Bus 服务。
+备份命令适用于文件已存在且尚未使用该备份名的情况；首次创建可跳过备份，已有备份则换一个文件名保留它。这里只重新加载 D-Bus 配置，不重启整个系统总线。
 
-再次检查当前服务状态和功耗：
+再次检查服务状态和功耗：
 
 ```bash
 systemctl status nvidia-powerd --no-pager
+journalctl -u nvidia-powerd -b --no-pager -n 50
 nvidia-smi -q -d POWER,PERFORMANCE
 ```
 
-这次启动日志出现了：
+2026-09-06 初次配置时观察到：
 
 ```text
 DBus Connection is established
-```
-
-同时观察到：
-
-```text
 Current Power Limit : 130.00 W
 Default Power Limit : 80.00 W
 Max Power Limit : 130.00 W
 ```
 
-默认值仍然是 80W，但当前上限已经到 130W。这也说明为什么一开始不能只盯着 `Default Power Limit`。
+默认值仍然是 80W，但当前上限已经到 130W。115W 和 130W 是两次检查时的读数；因为没有控制负载做对照实验，不能把全部变化归因于 D-Bus 配置。**连接建立和功耗上限正常，也不能证明所有客户端通信正常。**
 
-115W 和 130W 是两次检查时的读数；因为没有控制负载做对照实验，不能把补权限后的全部变化都归因于这一项配置。能确认的是：D-Bus 错误消失了，服务在运行，当前功耗上限达到了 130W。
+## 2026-09-15 复查：为什么认证日志涨到 6.5 GiB
+
+系统盘占用检查发现，`/var/log/auth.log` 和轮转后的 `auth.log.1` 合计约 6.5 GiB。近期日志样本中，大量重复信息形如：
+
+```text
+Rejected send message
+sender=... uid=1000 comm="...msedge --type=gpu-process..."
+interface="nvidia.powerd.datapacket" member="AutoflDatapacket"
+destination="nvidia.powerd.server" uid=0 comm="/usr/bin/nvidia-powerd"
+```
+
+另一个频繁出现的发送方是桌面合成器 `kwin_x11`。这些普通用户进程中的 NVIDIA 客户端向电源服务发消息，被只允许 root 发送的旧策略拒绝。它们不是登录失败记录，也不意味着浏览器在自行修改显卡功耗上限。
+
+拒绝记录来自 **`dbus-daemon`**，因此只查看 `journalctl -u nvidia-powerd` 会漏掉问题。原文“D-Bus 错误消失了”的说法仅适用于当时服务启动时的连接错误，不能覆盖客户端调用。
+
+补齐策略后，应在浏览器、桌面合成器正常运行时，同时检查：
+
+```bash
+systemctl is-active nvidia-powerd
+sudo journalctl -b --since '2 minutes ago' _COMM=dbus-daemon --no-pager \
+  | grep -E 'Rejected.*nvidia\.powerd|nvidia\.powerd.*Rejected'
+sudo tail -n 1000 /var/log/auth.log \
+  | grep -E 'Rejected.*nvidia\.powerd|nvidia\.powerd.*Rejected'
+nvidia-smi -q -d POWER,PERFORMANCE
+```
+
+`grep` 无匹配时返回 1 是正常现象。日志尾部可能仍有修复前的旧记录，应结合时间戳观察新的拒绝是否继续产生，而不是要求旧日志立刻消失。功耗上限会随平台条件变化，不要求任何时刻都固定为 130W。
+
+本机原先按周轮转认证日志，未设置大小阈值；这会放大高频报错造成的空间占用。应先修复通信，再压缩保留旧日志，并设置轮转大小阈值。`logrotate` 的 `maxsize` 只在定时任务执行时检查，**并非实时硬上限**；例如配合每小时检查，才能在每日轮转之间处理超过阈值的日志。不能靠丢弃所有认证日志或屏蔽 D-Bus 错误代替修复。
+
+本次实际将 `/var/log/auth.log` 从原来的 rsyslog 轮转组单独拆出，设置 `daily`、`maxsize 100M`、`rotate 7` 和 `compress`，并把 `logrotate.timer` 改为每小时检查。拆出时必须从旧规则中移除同一日志路径，避免重复定义；其他 rsyslog 日志仍保留原有轮转规则。
+
+修复后实测：服务为 `active`，当前功耗上限仍为 **130W**；连续 20 秒内认证日志没有增长，也没有新增 NVIDIA D-Bus 拒绝。两份历史认证日志合计约 **6.5 GiB**，压缩后约 **143 MiB**，`gzip -t` 完整性检查通过。这里验证的是当时桌面正常运行时的通信和日志情况，未进行持续满载、重启或电池模式测试。
 
 ## 日志里剩下的 DC 错误是什么
 
@@ -202,7 +237,7 @@ ERROR! Client (presumably SBIOS) has requested to disable Dynamic Boost DC contr
 | --- | --- | --- |
 | 配置前 | 80W | 服务不存在 |
 | 注册服务后 | 115W | 运行中，D-Bus 连接报错 |
-| 补权限并重启后 | 130W | 运行中，D-Bus 连接成功 |
+| 初次补权限并重启后 | 130W | 服务连接成功，后续发现客户端权限仍不完整 |
 
 最后一次采样的实际功耗只有约 28W，这是低负载下的正常读数。130W 是允许使用的上限，不是让显卡随时消耗 130W，也不代表帧率会按功耗比例上涨。
 
