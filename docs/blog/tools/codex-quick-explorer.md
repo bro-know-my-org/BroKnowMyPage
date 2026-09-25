@@ -29,7 +29,7 @@ Codex 查东西也要一轮轮调用模型：搜索、读文件、看结果，�
 ```toml
 name = "quick_explorer"
 description = "Bounded, low-ambiguity, read-only checks with independently verifiable results."
-model = "gpt-5.6-luna"
+model = "gpt-6-luna"
 model_reasoning_effort = "max"
 sandbox_mode = "read-only"
 developer_instructions = """
