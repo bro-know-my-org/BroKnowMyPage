@@ -32,7 +32,8 @@ export default defineConfig({
     transformItems: transformSitemapItems,
   },
   head: [
-    ['meta', { name: 'theme-color', content: '#4b0082' }],
+    ['meta', { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#111111', media: '(prefers-color-scheme: dark)' }],
     ['meta', { name: 'referrer', content: 'strict-origin-when-cross-origin' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'BKMPG RSS', href: '/rss.xml' }],

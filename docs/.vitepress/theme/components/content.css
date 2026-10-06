@@ -1,16 +1,14 @@
 .article-list {
-  margin: 28px 0 40px;
+  margin: 16px 0;
   border-top: 1px solid var(--vp-c-divider);
 }
 
 .article-row {
   display: grid;
   grid-template-columns: 104px minmax(0, 1fr);
-  gap: 24px;
-  padding: 22px 0;
+  gap: 12px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-1) !important;
-  text-decoration: none !important;
 }
 
 .article-row__date {
@@ -24,18 +22,13 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 7px;
+  gap: 3px;
 }
 
 .article-row__title {
   font-size: 17px;
   font-weight: 650;
   line-height: 1.45;
-  transition: color 0.15s ease;
-}
-
-.article-row:hover .article-row__title {
-  color: var(--vp-c-brand-1);
 }
 
 .article-row__description {
@@ -57,14 +50,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 24px 0 30px;
+  margin: 16px 0;
 }
 
 .tag-filter button {
-  padding: 6px 10px;
+  padding: 4px 8px;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  background: transparent;
+  background: var(--vp-c-bg);
   color: var(--vp-c-text-2);
   cursor: pointer;
   font: inherit;
@@ -84,7 +76,8 @@
 }
 
 .tag-filter button.active {
-  background: var(--vp-c-brand-soft);
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .tag-results {
@@ -102,18 +95,12 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 24px;
-  padding: 16px 2px;
-  color: var(--vp-c-text-1) !important;
-  text-decoration: none !important;
+  gap: 12px;
+  padding: 8px 2px;
 }
 
 .tag-results strong {
   font-weight: 550;
-}
-
-.tag-results a:hover strong {
-  color: var(--vp-c-brand-1);
 }
 
 .tag-results a span,
@@ -132,7 +119,7 @@
 .not-found {
   width: min(100% - 48px, 720px);
   margin: 0 auto;
-  padding: 128px 0 160px;
+  padding: 32px 0;
 }
 
 .not-found__code {
@@ -147,7 +134,6 @@
   margin: 0;
   color: var(--vp-c-text-1);
   font-size: clamp(32px, 5vw, 48px);
-  letter-spacing: -0.04em;
 }
 
 .not-found > p:not(.not-found__code) {
@@ -165,7 +151,7 @@
   .article-row {
     grid-template-columns: 1fr;
     gap: 7px;
-    padding: 19px 0;
+    padding: 10px 0;
   }
 
   .article-row__date {
@@ -180,12 +166,6 @@
 
   .not-found {
     width: min(100% - 48px, 720px);
-    padding: 88px 0 120px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .article-row__title {
-    transition: none;
+    padding: 24px 0;
   }
 }
