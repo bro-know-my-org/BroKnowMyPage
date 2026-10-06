@@ -1,25 +1,30 @@
-/* The document palette is shared by VitePress and the custom components. */
+/* One terminal palette, including visitors whose system prefers light mode. */
 :root,
-:root:lang(zh) {
+:root:lang(zh),
+:root.dark {
   --vp-font-family-base: ui-monospace, 'Courier New', monospace;
   --vp-font-family-mono: ui-monospace, 'Courier New', monospace;
-  --raw-heading-font: 'Times New Roman', Georgia, 'Songti SC', SimSun, serif;
-  --raw-visited: #551a8b;
-  --raw-hover: #b00000;
-  --vp-c-bg: #ffffff;
-  --vp-c-text-1: #000000;
-  --vp-c-text-2: var(--vp-c-text-1);
-  --vp-c-text-3: var(--vp-c-text-1);
-  --vp-c-brand-1: #0000ff;
-  --vp-c-brand-2: var(--raw-hover);
+  --terminal-green: #4AF626;
+  --terminal-cyan: #8BE9FD;
+  --terminal-magenta: #FF79C6;
+  --terminal-amber: #FFB86C;
+  /* Slightly brighter blue-grey keeps small terminal comments above AA. */
+  --terminal-comment: #7182B5;
+  --terminal-rule: '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────';
+  --vp-c-bg: #0A0E12;
+  --vp-c-text-1: var(--terminal-green);
+  --vp-c-text-2: var(--terminal-cyan);
+  --vp-c-text-3: var(--terminal-comment);
+  --vp-c-brand-1: var(--terminal-cyan);
+  --vp-c-brand-2: var(--terminal-cyan);
   --vp-c-brand-3: var(--vp-c-brand-1);
-  --vp-c-border: var(--vp-c-text-1);
-  --vp-c-divider: var(--vp-c-text-1);
+  --vp-c-border: #1F2937;
+  --vp-c-divider: var(--vp-c-border);
   --vp-c-gutter: var(--vp-c-divider);
-  --vp-c-bg-alt: var(--vp-c-bg);
-  --vp-c-bg-elv: var(--vp-c-bg);
-  --vp-c-bg-soft: var(--vp-c-bg);
-  --vp-c-brand-soft: var(--vp-c-bg);
+  --vp-c-bg-alt: #0D141B;
+  --vp-c-bg-elv: var(--vp-c-bg-alt);
+  --vp-c-bg-soft: var(--vp-c-bg-alt);
+  --vp-c-brand-soft: rgb(74 246 38 / 10%);
   --vp-c-default-soft: var(--vp-c-bg);
   --vp-c-default-1: var(--vp-c-text-1);
   --vp-c-default-2: var(--vp-c-text-1);
@@ -28,6 +33,9 @@
   --vp-c-warning-soft: var(--vp-c-bg);
   --vp-c-danger-soft: var(--vp-c-bg);
   --vp-c-important-soft: var(--vp-c-bg);
+  --vp-c-tip-1: var(--terminal-cyan);
+  --vp-c-warning-1: var(--terminal-amber);
+  --vp-c-danger-1: var(--terminal-magenta);
   --vp-nav-height: 52px;
   --vp-code-color: var(--vp-c-text-1);
   --vp-code-bg: var(--vp-c-bg);
@@ -39,15 +47,6 @@
   --vp-local-search-highlight-text: var(--vp-c-text-1);
   --vp-input-switch-bg-color: var(--vp-c-bg);
   --vp-input-border-color: var(--vp-c-border);
-  color-scheme: light;
-}
-
-:root.dark {
-  --vp-c-bg: #111111;
-  --vp-c-text-1: #eeeeee;
-  --vp-c-brand-1: #8ab4ff;
-  --raw-visited: #d7aaff;
-  --raw-hover: #ff9292;
   color-scheme: dark;
 }
 
@@ -55,17 +54,20 @@
 *,
 *::before,
 *::after {
-  border-radius: 0 !important;
+  border-radius: 2px !important;
+  font-family: var(--vp-font-family-mono) !important;
   box-shadow: none !important;
   text-shadow: none !important;
   background-image: none !important;
   backdrop-filter: none !important;
   animation: none !important;
-  transition: none !important;
+  transition-property: color, background-color, border-color, outline-color !important;
+  transition-duration: 150ms !important;
   scroll-behavior: auto !important;
 }
 
 body {
+  padding-bottom: 48px;
   font-size: 14px;
   line-height: 1.6;
   overflow-wrap: anywhere;
@@ -73,24 +75,24 @@ body {
 
 h1, h2, h3, h4, h5, h6,
 .VPNavBarTitle .title {
-  font-family: var(--raw-heading-font);
+  font-family: var(--vp-font-family-mono);
   font-weight: 700;
   letter-spacing: normal !important;
 }
 
 html a:any-link {
   color: var(--vp-c-brand-1) !important;
-  text-decoration: underline !important;
+  text-decoration: none !important;
   text-underline-offset: 2px;
 }
 
-html a:visited { color: var(--raw-visited) !important; }
-html a:any-link:hover { color: var(--raw-hover) !important; }
+html a:any-link:hover { background-color: var(--vp-c-brand-soft) !important; }
 html a:any-link > .text { color: inherit !important; }
 html a[aria-current='page'] { font-weight: 700; }
+.vp-doc :is(p, li, td, blockquote) a:any-link { text-decoration: underline !important; }
 
 html :is(a, button, input, textarea, select, [tabindex]):focus-visible {
-  outline: 1px dotted var(--vp-c-text-1) !important;
+  outline: 1px solid var(--vp-c-text-1) !important;
   outline-offset: 2px !important;
 }
 
@@ -99,12 +101,15 @@ html :is(button, input, textarea, select) {
   background-color: var(--vp-c-bg) !important;
   color: var(--vp-c-text-1) !important;
   font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  caret-color: var(--terminal-green);
 }
 
-html button:hover { color: var(--raw-hover) !important; }
+html button:hover { background-color: var(--vp-c-brand-soft) !important; border-color: var(--terminal-green); }
+html button:active { background-color: rgb(74 246 38 / 20%) !important; }
 html button:disabled { cursor: not-allowed; }
 html :is(input, textarea, select):focus {
-  outline: 1px dotted var(--vp-c-text-1) !important;
+  outline: 1px solid var(--vp-c-text-1) !important;
   outline-offset: 2px;
 }
 
@@ -127,9 +132,21 @@ html :is(input, textarea, select):focus {
   z-index: 3;
   padding: 0 !important;
 }
-.VPNavBar .divider-line { background-color: var(--vp-c-divider) !important; }
+.VPNavBar .divider-line { background: none !important; }
+.VPNavBar > .divider::after {
+  content: var(--terminal-rule) var(--terminal-rule) var(--terminal-rule) var(--terminal-rule);
+  position: absolute;
+  bottom: -6px;
+  width: 100%;
+  overflow: hidden;
+  color: var(--terminal-comment);
+  white-space: nowrap;
+  font-size: 12px;
+  pointer-events: none;
+}
 .VPNavBarTitle .title { font-size: 22px; }
 .VPNavBarMenuLink { font-size: 13px; }
+.VPNavBarMenuLink.active::after { content: '*'; color: var(--terminal-green); }
 .VPFooter { padding: 16px !important; }
 .VPHome { margin-bottom: 0 !important; }
 .VPDoc { padding-top: 20px !important; padding-bottom: 24px !important; }
@@ -137,12 +154,19 @@ html :is(input, textarea, select):focus {
 .VPDocFooter { margin-top: 24px !important; }
 .VPDocFooter .pager-link { padding: 8px 12px; min-height: 0; }
 
-.vp-doc h1 { font-size: 32px; line-height: 1.25; }
-.vp-doc h2 { margin-top: 24px; padding-top: 12px; font-size: 24px; }
-.vp-doc h3 { margin-top: 18px; font-size: 20px; }
+.vp-doc h1 { font-size: 24px; line-height: 1.5; }
+.vp-doc h2 { margin-top: 32px; padding-top: 12px; font-size: 20px; border-top: 0; }
+.vp-doc h3 { margin-top: 24px; font-size: 16px; }
+.vp-doc :is(h1, h2, h3):not(.terminal-command, .terminal-output)::before {
+  content: 'visitor@stylekit:~$ cat ';
+  color: var(--terminal-cyan);
+  font-size: 12px;
+  font-weight: 400;
+}
 .vp-doc :is(p, ul, ol, table, blockquote) { margin-top: 12px; margin-bottom: 12px; }
 .vp-doc :is(p, li) { line-height: 1.65; }
-.vp-doc table { max-width: 100%; }
+.vp-doc table { max-width: 100%; overflow-x: auto; white-space: normal; }
+.vp-doc th { color: var(--terminal-cyan); }
 .vp-doc :is(th, td, tr) { background-color: var(--vp-c-bg); }
 .vp-doc :is(th, td) { border-color: var(--vp-c-divider); padding: 4px 8px; }
 .vp-doc :is(blockquote, .custom-block) {
@@ -170,18 +194,11 @@ html :is(input, textarea, select):focus {
 .vp-doc button.copy::before { display: none; }
 .vp-doc div[class*='language-'] > span.lang { right: 56px; }
 
-/* Keep the accessible appearance switch, without a sliding thumb. */
-html .VPSwitch.VPSwitchAppearance {
-  width: 48px;
-  height: 28px;
-  border-color: var(--vp-c-border);
-  transition: none !important;
-}
-.VPSwitchAppearance .check { display: none; }
-.VPSwitchAppearance::after { content: '深色'; font-size: 12px; }
-.dark .VPSwitchAppearance::after { content: '浅色'; }
 .VPNavBarHamburger { border: 0; }
 .VPNavBarHamburger:hover .container :is(.top, .middle, .bottom) { transform: none; }
+.VPNavBarHamburger .container { width: auto; height: auto; }
+.VPNavBarHamburger .container::after { content: '[≡]'; font-size: 18px; color: var(--terminal-cyan); }
+.VPNavBarHamburger .container > span { display: none; }
 
 .DocSearch-Button { border: 1px solid var(--vp-c-border) !important; height: 28px !important; }
 .VPLocalSearchBox .shell { border: 1px solid var(--vp-c-divider); padding: 12px; }
@@ -193,8 +210,91 @@ html .VPSwitch.VPSwitchAppearance {
 .VPLocalSearchBox mark { font-weight: 700; text-decoration: underline; }
 .VPLocalSearchBox kbd { background-color: var(--vp-c-bg); }
 
+/* Characters provide the chrome; panels remain flat. */
+html :is([class*='vpi-'], .vp-icon) { mask: none !important; background: none !important; width: auto; height: auto; }
+html :is([class*='vpi-'], .vp-icon)::before { content: '>'; color: var(--terminal-cyan); }
+html .vpi-search::before { content: '/'; }
+html .DocSearch-Search-Icon::before { content: '/'; font-size: 18px; }
+html .vpi-close::before { content: 'x'; }
+.terminal-command { color: var(--terminal-green) !important; font-size: 14px !important; line-height: 1.8; overflow-wrap: anywhere; }
+.terminal-command > span:first-child { color: var(--terminal-cyan); font-size: 12px; font-weight: 400; }
+.terminal-comment { color: var(--terminal-comment) !important; font-size: 12px; }
+.terminal-ok { color: var(--terminal-green) !important; }
+.terminal-error { color: var(--terminal-magenta) !important; }
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  margin-left: 6px;
+  vertical-align: middle;
+  background: var(--terminal-green);
+  animation: terminal-blink 1s steps(1, end) infinite !important;
+}
+.vp-doc h1:not(.terminal-output)::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  margin-left: 6px;
+  background: var(--terminal-green);
+  animation: terminal-blink 1s steps(1, end) infinite !important;
+}
+@keyframes terminal-blink { 50% { opacity: 0; } }
+.terminal-status {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 16px calc(4px + env(safe-area-inset-bottom));
+  border: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-alt);
+  font-size: 12px;
+}
+.terminal-status__session { color: var(--terminal-green); font-weight: 700; }
+.terminal-status__path { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--terminal-comment); }
+.terminal-status__exit { margin-left: auto; white-space: nowrap; }
+.home-page { max-width: 1024px; padding: 24px 20px !important; margin: 24px auto !important; border: 1px solid var(--vp-c-border); background: var(--vp-c-bg-alt); }
+.home-intro h1 { margin: 12px 0; letter-spacing: -1px; }
+.home-intro__copy > .terminal-command { margin-top: 24px; }
+.home-intro > .terminal-command { margin-top: 24px; }
+:is(.home-featured, .home-latest, .comments, .content-map, .recent-list, .article-list, .tag-results, .link-group__items) { border-top: 0 !important; }
+:is(.featured-card, .recent-item, .article-row, .tag-results li, .link-entry, .content-map, .content-map__item) { border-bottom: 0; }
+.content-map__item + .content-map__item { border-top: 0 !important; }
+:is(.home-featured, .home-latest, .comments, .link-group)::before {
+  content: '────────────────────────────────────────────────────────────────────────────────';
+  display: block;
+  overflow: hidden;
+  margin-bottom: 16px;
+  color: var(--terminal-comment);
+  font-size: 12px;
+  white-space: nowrap;
+}
+html :is(.article-row__date, .recent-item__number, .recent-item__meta time, .content-map__count, .tag-filter button span) { color: var(--terminal-amber); }
+.content-map__body strong::before { content: 'drwxr-xr-x  '; color: var(--terminal-comment); font-weight: 400; font-size: 12px; }
+.content-map__body small::before { content: '# '; }
+.article-row__title::before { content: '-rw-r--r--  '; color: var(--terminal-comment); font-size: 12px; font-weight: 400; }
+.tag-results strong::before { content: './'; }
+.vp-doc hr { height: auto; border: 0; }
+.vp-doc hr::before { content: '────────────────────────────────────────────────────────────────────────────────'; display: block; overflow: hidden; white-space: nowrap; color: var(--terminal-comment); font-size: 12px; }
+.tag-filter button.active { border-color: var(--terminal-green); background: var(--vp-c-brand-soft); }
+.atk-avatar, .atk-avatar img { display: none !important; }
+.comments__notice { background: var(--vp-c-bg-alt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0s !important; }
+  .terminal-cursor, .vp-doc h1:not(.terminal-output)::after { animation: none !important; }
+}
+
 @media (max-width: 767px) {
   .VPDoc { padding-right: 16px; padding-left: 16px; }
-  .vp-doc h1 { font-size: 28px; }
+  .vp-doc h1 { font-size: 20px; }
   .VPLocalSearchBox .shell { margin: 0; border: 0; }
+  .home-page { width: calc(100% - 24px); padding: 16px 12px !important; margin: 12px auto !important; }
+  .terminal-status { gap: 8px; padding-inline: 10px; font-size: 11px; }
+  .terminal-status__path { display: none; }
 }

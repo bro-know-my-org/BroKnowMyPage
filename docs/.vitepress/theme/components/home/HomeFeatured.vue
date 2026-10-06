@@ -11,9 +11,10 @@ function isExternal(href: string): boolean {
 <template>
   <section v-if="featuredLinks.length" class="home-featured">
     <div class="home-section-heading">
-      <h2>站点与服务</h2>
+      <h2 class="terminal-command"><span>visitor@stylekit:~$</span> cat services.conf</h2>
       <a href="/links">全部链接</a>
     </div>
+    <p class="terminal-comment"># 站点与服务</p>
 
     <div class="featured-grid">
       <article v-for="item in featuredLinks" :key="item.title" class="featured-card">
@@ -21,7 +22,7 @@ function isExternal(href: string): boolean {
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
           <ul v-if="item.details?.length">
-            <li v-for="detail in item.details" :key="detail">{{ detail }}</li>
+            <li v-for="detail in item.details" :key="detail"># {{ detail }}</li>
           </ul>
         </div>
 

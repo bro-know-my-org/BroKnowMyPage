@@ -11,6 +11,7 @@ import HomePage from './components/HomePage.vue'
 import LinkCatalog from './components/LinkCatalog.vue'
 import NotFound from './components/NotFound.vue'
 import TagCatalog from './components/TagCatalog.vue'
+import TerminalStatus from './components/TerminalStatus.vue'
 
 export default {
   extends: DefaultTheme,
@@ -19,11 +20,13 @@ export default {
       'doc-before': () => h(ArticleAuthor),
       'doc-after': () => h(Comments),
       'not-found': () => h(NotFound),
+      'layout-bottom': () => h(TerminalStatus),
     }),
   enhanceApp({ app }) {
     app.component('ArticleList', ArticleList)
     app.component('HomePage', HomePage)
     app.component('LinkCatalog', LinkCatalog)
     app.component('TagCatalog', TagCatalog)
+    app.component('NotFound', NotFound)
   },
 } satisfies Theme

@@ -9,7 +9,7 @@ const author = computed(() =>
 </script>
 
 <template>
-  <p v-if="author && frontmatter.listed !== false" class="article-author">作者：{{ author }}</p>
+  <p v-if="author && frontmatter.listed !== false" class="article-author terminal-comment"># author: {{ author }}</p>
 </template>
 
 <style scoped>
