@@ -118,7 +118,16 @@ html :is(input, textarea, select):focus {
   background-color: var(--vp-c-bg) !important;
 }
 
-.VPNavBar { border-bottom: 1px solid var(--vp-c-divider); }
+.VPNavBar { border-bottom: 0 !important; }
+/* Keep the native 1px divider above the opaque navigation content. */
+.VPNavBar > .divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0 !important;
+}
+.VPNavBar .divider-line { background-color: var(--vp-c-divider) !important; }
 .VPNavBarTitle .title { font-size: 22px; }
 .VPNavBarMenuLink { font-size: 13px; }
 .VPFooter { padding: 16px !important; }
