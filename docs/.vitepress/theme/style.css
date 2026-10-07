@@ -1,189 +1,201 @@
-/* GitHub's neutral surfaces with the site's indigo brand, shared with custom components. */
+/* Warm Scandinavian surfaces; the original indigo remains a small identity accent. */
 :root,
 :root:lang(zh) {
   --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Noto Sans', sans-serif;
   --vp-font-family-mono: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
-  --vp-c-bg: #ffffff;
-  --vp-c-bg-alt: #f6f8fa;
-  --vp-c-bg-elv: var(--vp-c-bg);
+  --vp-c-bg: #f5f0eb;
+  --vp-c-bg-alt: #ede7df;
+  --vp-c-bg-elv: #fbf8f4;
   --vp-c-bg-soft: var(--vp-c-bg-alt);
-  --vp-c-text-1: #1f2328;
-  --vp-c-text-2: #656d76;
-  /* Small metadata uses the secondary grey to retain AA contrast. */
+  --vp-c-text-1: #3d3d3d;
+  /* Pale wood is decorative; readable text uses its darker relative. */
+  --vp-c-text-2: #6c6157;
   --vp-c-text-3: var(--vp-c-text-2);
-  --vp-c-brand-1: #4B0082;
-  --vp-c-brand-2: #3a0066;
+  --vp-c-brand-1: #506b5d;
+  --vp-c-brand-2: #3f574a;
   --vp-c-brand-3: var(--vp-c-brand-1);
-  --vp-c-brand-soft: rgb(75 0 130 / 8%);
-  --vp-c-border: #d0d7de;
+  --vp-c-brand-soft: rgb(90 122 107 / 10%);
+  --vp-c-border: rgb(212 205 197 / 40%);
   --vp-c-divider: var(--vp-c-border);
   --vp-c-gutter: var(--vp-c-border);
   --vp-c-tip-1: var(--vp-c-brand-1);
   --vp-c-tip-soft: var(--vp-c-bg-alt);
-  --vp-c-success-1: #1f883d;
+  --vp-c-success-1: var(--vp-c-brand-1);
   --vp-c-success-soft: var(--vp-c-bg-alt);
-  --vp-c-warning-1: #9a6700;
+  --vp-c-warning-1: #785c40;
   --vp-c-warning-soft: var(--vp-c-bg-alt);
-  --vp-c-danger-1: #cf222e;
+  --vp-c-danger-1: #8c544e;
   --vp-c-danger-soft: var(--vp-c-bg-alt);
-  --vp-c-important-1: var(--vp-c-brand-1);
+  --vp-c-important-1: #5b4b68;
   --vp-c-important-soft: var(--vp-c-bg-alt);
   --vp-c-default-1: var(--vp-c-text-1);
   --vp-c-default-2: var(--vp-c-text-2);
   --vp-c-default-3: var(--vp-c-text-2);
   --vp-c-default-soft: var(--vp-c-bg-alt);
-  --vp-nav-height: 56px;
+  --vp-nav-height: 64px;
   --vp-code-color: var(--vp-c-text-1);
   --vp-code-bg: var(--vp-c-bg-alt);
   --vp-code-block-bg: var(--vp-c-bg-alt);
   --vp-code-line-highlight-color: var(--vp-c-brand-soft);
-  --vp-local-search-result-bg: var(--vp-c-bg);
+  --vp-local-search-result-bg: var(--vp-c-bg-elv);
   --vp-local-search-result-selected-bg: var(--vp-c-bg-alt);
   --vp-local-search-result-selected-border: var(--vp-c-brand-1);
   --vp-local-search-highlight-bg: var(--vp-c-bg-alt);
   --vp-local-search-highlight-text: var(--vp-c-text-1);
   --vp-input-switch-bg-color: var(--vp-c-bg-alt);
   --vp-input-border-color: var(--vp-c-border);
-  --github-focus: rgb(75 0 130 / 30%);
-  --github-active: #e8e8e8;
+  --vp-backdrop-bg-color: rgb(61 61 61 / 14%);
+  --nordic-identity: #4B0082;
+  --nordic-wood: #a89279;
+  --nordic-fjord-soft: rgb(123 160 184 / 10%);
+  --nordic-focus: rgb(90 122 107 / 30%);
+  --nordic-active: #e7dfd6;
   color-scheme: light;
 }
 
 :root.dark {
-  --vp-c-bg: #0d1117;
-  --vp-c-bg-alt: #161b22;
-  --vp-c-text-1: #e6edf3;
-  --vp-c-text-2: #8b949e;
-  --vp-c-brand-1: #c4a7e7;
-  --vp-c-brand-2: #d8c2f2;
-  --vp-c-brand-soft: rgb(196 167 231 / 10%);
-  --vp-c-border: #30363d;
-  --vp-c-success-1: #3fb950;
-  --vp-c-warning-1: #d29922;
-  --vp-c-danger-1: #f85149;
-  --github-focus: rgb(196 167 231 / 30%);
-  --github-active: #21262d;
+  --vp-c-bg: #2b2926;
+  --vp-c-bg-alt: #33302c;
+  --vp-c-bg-elv: #36332e;
+  --vp-c-text-1: #e8e0d7;
+  --vp-c-text-2: #c0b2a2;
+  --vp-c-brand-1: #b4c9ba;
+  --vp-c-brand-2: #ccdccf;
+  --vp-c-brand-soft: rgb(180 201 186 / 10%);
+  --vp-c-border: rgb(212 205 197 / 22%);
+  --vp-c-warning-1: #d5b797;
+  --vp-c-danger-1: #d8aaa0;
+  --vp-c-important-1: #cab8d3;
+  --nordic-identity: #c4a7e7;
+  --nordic-focus: rgb(180 201 186 / 30%);
+  --nordic-active: #403b35;
   color-scheme: dark;
 }
 
-/* Also constrain lazy-loaded comment and search styles. */
+/* Decoration resets do not change native icon geometry or drawer transitions. */
 *, *::before, *::after {
-  border-radius: 6px !important;
   box-shadow: none !important;
   text-shadow: none !important;
   background-image: none !important;
   backdrop-filter: none !important;
-  animation: none !important;
-  transition-property: color, background-color, border-color, outline-color, box-shadow !important;
-  transition-duration: 150ms !important;
-  scroll-behavior: auto !important;
 }
-
-body { font-family: var(--vp-font-family-base); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
-h1, h2, h3, h4, h5, h6, .VPNavBarTitle .title { font-family: var(--vp-font-family-base); font-weight: 600; letter-spacing: normal !important; }
+body { font-family: var(--vp-font-family-base); font-size: 16px; font-weight: 300; line-height: 1.9; overflow-wrap: anywhere; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--vp-font-family-base); font-weight: 300 !important; letter-spacing: .025em; }
 pre, code, kbd, samp { font-family: var(--vp-font-family-mono) !important; }
-html a:any-link { color: var(--vp-c-brand-1); text-underline-offset: 2px; }
-html a:any-link:hover { text-decoration: underline; }
+html a:any-link { color: var(--vp-c-brand-1); font-weight: 300; text-underline-offset: 4px; transition: color 500ms ease-in-out, background-color 500ms ease-in-out, border-color 500ms ease-in-out; }
+html a:any-link:hover { color: var(--vp-c-brand-2); text-decoration: underline; }
 .vp-doc :is(p, li, td, blockquote) a:any-link { text-decoration: underline; }
-html a[aria-current='page'] { font-weight: 600; }
+.vp-doc :is(strong, b, th), .vp-doc code span,
+.VPNavBarTitle .title, .VPNavBarMenuLink, .VPNavScreenMenuLink,
+.VPSidebarItem .text, .VPDocAsideOutline .outline-title, .VPDocOutlineItem .outline-link,
+.VPDocFooter .title, .VPNavScreenAppearance .text,
+.VPLocalSearchBox :is(mark, .title, .title-icon, kbd, .search-keyboard-shortcuts) { font-weight: 300 !important; }
+.VPSkipLink, .DocSearch-Button :is(span, kbd), .VPLocalNav :is(.menu-text, button),
+.VPLastUpdated, .VPLastUpdated time, .VPDocFooter .desc,
+.vp-doc :is(.header-anchor, .lang) { font-weight: 300 !important; }
+.vp-doc :is(p, li, td, blockquote) :is(strong, b) { font-style: italic; }
 
 html :is(button, input, textarea, select) {
   border: 1px solid var(--vp-c-border);
-  background-color: var(--vp-c-bg-alt);
+  border-radius: 3px;
+  background-color: transparent;
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-base);
   font-size: 14px;
+  font-weight: 300;
+  transition: color 500ms ease-in-out, background-color 500ms ease-in-out, border-color 500ms ease-in-out;
 }
-html button { font-weight: 600; box-shadow: 0 1px 0 rgb(27 31 36 / 4%) !important; }
-html button:hover { background-color: var(--vp-c-bg-alt); border-color: var(--vp-c-text-2); }
-html button:active { background-color: var(--github-active); }
+html :is(a, button, input, textarea, select) {
+  transition-property: color, background-color, border-color !important;
+  transition-duration: 500ms !important;
+  transition-timing-function: ease-in-out !important;
+}
+html button:hover { background-color: var(--vp-c-bg-alt); border-color: var(--nordic-wood); }
+html button:active { background-color: var(--nordic-active); }
 html button:disabled { cursor: not-allowed; }
 html :is(a, button, input, textarea, select, [tabindex]):focus-visible,
 html :is(input, textarea, select):focus {
   outline: 2px solid var(--vp-c-brand-1) !important;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--github-focus) !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--nordic-focus) !important;
 }
-html :is(input, textarea, select):focus { border-color: var(--vp-c-brand-1); background-color: var(--vp-c-bg); }
+html :is(input, textarea, select):focus { border-color: var(--vp-c-brand-1); }
 html :is(input, textarea)::placeholder { color: var(--vp-c-text-2); }
+.featured-card, .content-map, .recent-list, .comments__notice,
+.vp-doc :is(.custom-block, div[class*='language-'], .pager-link),
+.DocSearch-Button, .VPLocalSearchBox :is(.shell, .result, .search-bar),
+.VPSwitch, .VPSwitch .check, .VPLocalNavOutlineDropdown .items { border-radius: 3px !important; }
 
-.VPNavBar, .VPNavBar .content-body, .VPNavScreen, .VPLocalNav, .VPBackdrop, .VPLocalSearchBox .backdrop { background-color: var(--vp-c-bg) !important; }
+.VPNavBar, .VPNavBar .content-body, .VPNavScreen, .VPLocalNav { background-color: var(--vp-c-bg) !important; }
 .VPNavBar { border-bottom: 0 !important; }
-/* Keep the full-width native divider above the opaque navigation content. */
+/* Preserve the full-width divider above the opaque navigation content. */
 .VPNavBar > .divider { position: absolute; bottom: 0; left: 0; z-index: 3; padding: 0 !important; }
 .VPNavBar .divider-line { background-color: var(--vp-c-divider) !important; }
-.VPNavBar, .VPNavBar .divider, .VPNavBar .divider-line, .VPFooter,
-.content-map__item, .recent-item, .article-row, .tag-results li, .link-entry, .comments { border-radius: 0 !important; }
-.VPNavBarTitle .title { font-size: 20px; }
-.VPNavBarMenuLink { font-size: 14px; }
-.VPFooter { padding: 20px !important; background: var(--vp-c-bg-alt); }
+.VPNavBarTitle .title { color: var(--nordic-identity); font-size: 18px; letter-spacing: .08em; text-transform: lowercase; }
+.VPNavBarMenuLink { font-size: 13px; }
+.VPFooter { padding: 48px 24px !important; background: var(--vp-c-bg-alt); }
+.VPFooter .copyright { color: var(--vp-c-text-2); font-weight: 300; text-transform: lowercase; }
 .VPHome { margin-bottom: 0 !important; }
-.VPDoc { padding-top: 24px !important; padding-bottom: 32px !important; }
+.VPDoc { padding-top: 64px !important; padding-bottom: 80px !important; }
 .VPDoc .content-container { max-width: 75ch !important; }
-.VPDocFooter { margin-top: 24px !important; }
-.VPDocFooter .pager-link { padding: 12px 16px; min-height: 0; }
+.VPDocFooter { margin-top: 64px !important; }
+.VPDocFooter .pager-link { padding: 24px; min-height: 0; border-color: var(--vp-c-border); }
 .VPDocFooter .pager-link:hover { background: var(--vp-c-bg-alt); }
 
-.vp-doc h1 { font-size: 28px; line-height: 1.3; }
-.vp-doc h2 { margin-top: 28px; padding-top: 12px; font-size: 22px; }
-.vp-doc h3 { margin-top: 20px; font-size: 18px; }
-.vp-doc :is(p, ul, ol, table, blockquote) { margin-top: 12px; margin-bottom: 12px; }
-.vp-doc :is(p, li) { line-height: 1.7; }
+.vp-doc h1 { font-size: 32px; line-height: 1.5; }
+.vp-doc h2 { margin-top: 64px; padding-top: 24px; font-size: 24px; border-color: var(--vp-c-divider); }
+.vp-doc h3 { margin-top: 40px; font-size: 20px; }
+.vp-doc :is(p, ul, ol, table, blockquote) { margin-top: 24px; margin-bottom: 24px; }
+.vp-doc :is(p, li) { line-height: 1.9; }
 .vp-doc table { max-width: 100%; overflow-x: auto; overflow-wrap: normal; }
 .vp-doc table code { white-space: nowrap; }
-.vp-doc :is(th, td) { border-color: var(--vp-c-border); padding: 6px 10px; }
+.vp-doc :is(th, td) { border-color: var(--vp-c-border); padding: 12px 16px; font-size: 14px; }
 .vp-doc th, .vp-doc tr:nth-child(2n) { background-color: var(--vp-c-bg-alt); }
 .vp-doc tr { background-color: var(--vp-c-bg); }
-.vp-doc :is(blockquote, .custom-block) { border: 1px solid var(--vp-c-border); padding: 12px 16px; background: var(--vp-c-bg-alt); color: var(--vp-c-text-1); }
-.vp-doc .custom-block.tip { border-color: var(--vp-c-brand-1); }
-.vp-doc .custom-block.warning { border-color: var(--vp-c-warning-1); }
-.vp-doc .custom-block.danger { border-color: var(--vp-c-danger-1); }
+.vp-doc :is(blockquote, .custom-block) { border: 1px solid var(--vp-c-border); padding: 24px; background: var(--vp-c-bg-alt); color: var(--vp-c-text-1); }
+.vp-doc .custom-block :is(.custom-block-title, strong) { font-weight: 300; }
 .vp-doc .custom-block.warning .custom-block-title { color: var(--vp-c-warning-1); }
 .vp-doc .custom-block.danger .custom-block-title { color: var(--vp-c-danger-1); }
-.vp-doc div[class*='language-'] { margin: 16px 0; border: 1px solid var(--vp-c-border); background: var(--vp-c-bg-alt); }
-.vp-doc div[class*='language-'] pre { padding-top: 32px; padding-bottom: 16px; }
-.vp-doc .line-numbers-wrapper { padding-top: 32px; }
-.vp-doc :not(pre) > code { padding: 2px 5px; }
-.vp-doc div[class*='language-'] > button.copy { width: auto; height: 24px; padding: 0 8px; opacity: 1; font-size: 12px; }
+.vp-doc div[class*='language-'] { margin: 32px 0; border: 1px solid var(--vp-c-border); background: var(--vp-c-bg-alt); }
+.vp-doc div[class*='language-'] pre { padding-top: 40px; padding-bottom: 24px; }
+.vp-doc .line-numbers-wrapper { padding-top: 40px; }
+.vp-doc :not(pre) > code { padding: 3px 6px; font-weight: 300; }
+.vp-doc div[class*='language-'] > button.copy { width: auto; height: 28px; padding: 0 10px; opacity: 1; font-size: 12px; }
 .vp-doc button.copy::after { content: '复制'; }
 .vp-doc button.copy.copied::after { content: '已复制'; }
 .vp-doc button.copy::before { display: none; }
-.vp-doc div[class*='language-'] > span.lang { right: 68px; }
+.vp-doc div[class*='language-'] > span.lang { right: 72px; color: var(--vp-c-text-2); }
 .VPNavBarHamburger { border: 0; }
-/* Icon strokes are geometry, not rounded UI panels. */
-.VPNavBarHamburger .container,
-.VPNavBarHamburger .container :is(.top, .middle, .bottom) { border-radius: 0 !important; }
+.VPSwitch .check { transition: none; }
 
-.DocSearch-Button { border: 1px solid var(--vp-c-border) !important; height: 30px !important; }
-.VPLocalSearchBox .shell { border: 1px solid var(--vp-c-border); padding: 16px; }
+.DocSearch-Button { border: 1px solid var(--vp-c-border) !important; height: 32px !important; }
+.VPLocalSearchBox .shell { border: 1px solid var(--vp-c-border); padding: 24px; background: var(--vp-c-bg-elv); }
 .VPLocalSearchBox .result { border-width: 1px; }
 .VPLocalSearchBox .result.selected { outline: 2px solid var(--vp-c-brand-1); outline-offset: -2px; }
 .VPLocalSearchBox :is(.excerpt, .search-keyboard-shortcuts) { opacity: 1; }
 .VPLocalSearchBox [class*='excerpt-gradient'] { display: none; }
-.VPLocalSearchBox mark { font-weight: 600; }
 .VPLocalSearchBox kbd { background: var(--vp-c-bg-alt); }
 
-.article-row:hover, .tag-results a:hover, .link-entry:hover { background-color: var(--vp-c-bg-alt); }
+.article-row:hover, .tag-results a:hover, .link-entry:hover { background-color: var(--nordic-fjord-soft); }
 .tag-filter button.active { background: var(--vp-c-brand-soft); border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
 .comments__notice.comments__notice--error { color: var(--vp-c-danger-1); border-color: var(--vp-c-danger-1); }
-.comments .artalk, .atk-layer-wrap { font-family: var(--vp-font-family-base); }
+.comments .artalk, .atk-layer-wrap { font-family: var(--vp-font-family-base); font-weight: 300; }
 .home-page :is(.content-map__item, .recent-item) { text-decoration: none !important; }
-.content-map__body strong, .recent-item__main strong { text-decoration: underline; text-underline-offset: 2px; }
-html .content-map__item:focus-visible, html .recent-item:focus-visible {
-  outline-offset: -3px;
-  box-shadow: inset 0 0 0 4px var(--github-focus) !important;
-}
+html .content-map__item:focus-visible, html .recent-item:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 3px var(--nordic-focus) !important; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: 0s !important; animation: none !important; }
+  *, *::before, *::after { transition-duration: 0s !important; animation: none !important; scroll-behavior: auto !important; }
+  html :is(a, button, input, textarea, select) { transition-duration: 0s !important; }
 }
 @media (max-width: 959px), (pointer: coarse) {
-  /* iOS zooms focused form fields whose computed font is below 16px. */
+  /* Preserve the mobile fix: iOS zooms focused fields below 16px. */
   html :is(input, textarea, select) { font-size: 16px !important; }
 }
 @media (max-width: 767px) {
-  .VPDoc { padding-right: 16px !important; padding-left: 16px !important; }
+  .VPDoc { padding: 40px 16px 56px !important; }
   .VPHome .vp-doc { padding-right: 16px; padding-left: 16px; }
-  .vp-doc h1 { font-size: 24px; }
-  .VPLocalSearchBox .shell { margin: 0; border: 0; border-radius: 0 !important; height: 100dvh; }
+  .vp-doc h1 { font-size: 26px; }
+  .vp-doc h2 { margin-top: 48px; padding-top: 20px; font-size: 22px; }
+  .vp-doc :is(th, td) { padding: 10px 12px; }
+  .VPLocalSearchBox .shell { margin: 0; padding: 16px; border: 0; border-radius: 0 !important; height: 100dvh; }
 }

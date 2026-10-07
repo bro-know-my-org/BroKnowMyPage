@@ -1,5 +1,6 @@
 import { defineConfig, type HeadConfig } from 'vitepress'
 import { transformSitemapItems } from './sitemap.mts'
+import { nordicLight, nordicDark } from './code-themes.mts'
 
 const siteUrl = (process.env.SITE_URL || 'https://bro-know-my.org').replace(/\/$/, '')
 
@@ -33,8 +34,8 @@ export default defineConfig({
     transformItems: transformSitemapItems,
   },
   head: [
-    ['meta', { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' }],
-    ['meta', { name: 'theme-color', content: '#0d1117', media: '(prefers-color-scheme: dark)' }],
+    ['meta', { name: 'theme-color', content: '#f5f0eb', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#2b2926', media: '(prefers-color-scheme: dark)' }],
     ['meta', { name: 'referrer', content: 'strict-origin-when-cross-origin' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'BKMPG RSS', href: '/rss.xml' }],
@@ -42,8 +43,8 @@ export default defineConfig({
   markdown: {
     lineNumbers: true,
     theme: {
-      light: 'github-light',
-      dark: 'github-dark',
+      light: nordicLight,
+      dark: nordicDark,
     },
   },
   themeConfig: {
