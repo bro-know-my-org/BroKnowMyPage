@@ -131,10 +131,10 @@ html :is(input, textarea)::placeholder { color: var(--vp-c-text-2); }
 /* Preserve the full-width divider above the opaque navigation content. */
 .VPNavBar > .divider { position: absolute; bottom: 0; left: 0; z-index: 3; padding: 0 !important; }
 .VPNavBar .divider-line { background-color: var(--vp-c-divider) !important; }
-.VPNavBarTitle .title { color: var(--nordic-identity); font-size: 18px; letter-spacing: .08em; text-transform: lowercase; }
+.VPNavBarTitle .title { color: var(--nordic-identity); font-size: 18px; letter-spacing: .08em; }
 .VPNavBarMenuLink { font-size: 13px; }
 .VPFooter { padding: 48px 24px !important; background: var(--vp-c-bg-alt); }
-.VPFooter .copyright { color: var(--vp-c-text-2); font-weight: 300; text-transform: lowercase; }
+.VPFooter .copyright { color: var(--vp-c-text-2); font-weight: 300; }
 .VPHome { margin-bottom: 0 !important; }
 .VPDoc { padding-top: 64px !important; padding-bottom: 80px !important; }
 .VPDoc .content-container { max-width: 75ch !important; }
