@@ -1,5 +1,5 @@
 .home-page {
-  width: min(100% - 32px, 75ch);
+  width: min(100%, 75ch);
   margin: 0 auto;
   padding: 20px 0 16px;
 }

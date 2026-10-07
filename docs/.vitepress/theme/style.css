@@ -129,7 +129,8 @@ html :is(input, textarea)::placeholder { color: var(--vp-c-text-2); }
 .vp-doc h3 { margin-top: 20px; font-size: 18px; }
 .vp-doc :is(p, ul, ol, table, blockquote) { margin-top: 12px; margin-bottom: 12px; }
 .vp-doc :is(p, li) { line-height: 1.7; }
-.vp-doc table { max-width: 100%; overflow-x: auto; }
+.vp-doc table { max-width: 100%; overflow-x: auto; overflow-wrap: normal; }
+.vp-doc table code { white-space: nowrap; }
 .vp-doc :is(th, td) { border-color: var(--vp-c-border); padding: 6px 10px; }
 .vp-doc th, .vp-doc tr:nth-child(2n) { background-color: var(--vp-c-bg-alt); }
 .vp-doc tr { background-color: var(--vp-c-bg); }
@@ -149,7 +150,9 @@ html :is(input, textarea)::placeholder { color: var(--vp-c-text-2); }
 .vp-doc button.copy::before { display: none; }
 .vp-doc div[class*='language-'] > span.lang { right: 68px; }
 .VPNavBarHamburger { border: 0; }
-.VPNavBarHamburger:hover .container :is(.top, .middle, .bottom) { transform: none; }
+/* Icon strokes are geometry, not rounded UI panels. */
+.VPNavBarHamburger .container,
+.VPNavBarHamburger .container :is(.top, .middle, .bottom) { border-radius: 0 !important; }
 
 .DocSearch-Button { border: 1px solid var(--vp-c-border) !important; height: 30px !important; }
 .VPLocalSearchBox .shell { border: 1px solid var(--vp-c-border); padding: 16px; }
@@ -174,8 +177,13 @@ html .content-map__item:focus-visible, html .recent-item:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation: none !important; }
 }
+@media (max-width: 959px), (pointer: coarse) {
+  /* iOS zooms focused form fields whose computed font is below 16px. */
+  html :is(input, textarea, select) { font-size: 16px !important; }
+}
 @media (max-width: 767px) {
-  .VPDoc { padding-right: 16px; padding-left: 16px; }
+  .VPDoc { padding-right: 16px !important; padding-left: 16px !important; }
+  .VPHome .vp-doc { padding-right: 16px; padding-left: 16px; }
   .vp-doc h1 { font-size: 24px; }
-  .VPLocalSearchBox .shell { margin: 0; }
+  .VPLocalSearchBox .shell { margin: 0; border: 0; border-radius: 0 !important; height: 100dvh; }
 }
