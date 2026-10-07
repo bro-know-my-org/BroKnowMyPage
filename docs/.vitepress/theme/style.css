@@ -1,4 +1,4 @@
-/* GitHub's neutral surfaces and semantic colors, shared with custom components. */
+/* GitHub's neutral surfaces with the site's indigo brand, shared with custom components. */
 :root,
 :root:lang(zh) {
   --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Noto Sans', sans-serif;
@@ -11,10 +11,10 @@
   --vp-c-text-2: #656d76;
   /* Small metadata uses the secondary grey to retain AA contrast. */
   --vp-c-text-3: var(--vp-c-text-2);
-  --vp-c-brand-1: #0969da;
-  --vp-c-brand-2: #0550ae;
+  --vp-c-brand-1: #4B0082;
+  --vp-c-brand-2: #3a0066;
   --vp-c-brand-3: var(--vp-c-brand-1);
-  --vp-c-brand-soft: rgb(9 105 218 / 8%);
+  --vp-c-brand-soft: rgb(75 0 130 / 8%);
   --vp-c-border: #d0d7de;
   --vp-c-divider: var(--vp-c-border);
   --vp-c-gutter: var(--vp-c-border);
@@ -44,7 +44,7 @@
   --vp-local-search-highlight-text: var(--vp-c-text-1);
   --vp-input-switch-bg-color: var(--vp-c-bg-alt);
   --vp-input-border-color: var(--vp-c-border);
-  --github-focus: rgb(9 105 218 / 30%);
+  --github-focus: rgb(75 0 130 / 30%);
   --github-active: #e8e8e8;
   color-scheme: light;
 }
@@ -54,14 +54,14 @@
   --vp-c-bg-alt: #161b22;
   --vp-c-text-1: #e6edf3;
   --vp-c-text-2: #8b949e;
-  --vp-c-brand-1: #58a6ff;
-  --vp-c-brand-2: #79c0ff;
-  --vp-c-brand-soft: rgb(88 166 255 / 10%);
+  --vp-c-brand-1: #c4a7e7;
+  --vp-c-brand-2: #d8c2f2;
+  --vp-c-brand-soft: rgb(196 167 231 / 10%);
   --vp-c-border: #30363d;
   --vp-c-success-1: #3fb950;
   --vp-c-warning-1: #d29922;
   --vp-c-danger-1: #f85149;
-  --github-focus: rgb(88 166 255 / 30%);
+  --github-focus: rgb(196 167 231 / 30%);
   --github-active: #21262d;
   color-scheme: dark;
 }
