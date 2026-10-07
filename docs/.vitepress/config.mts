@@ -26,14 +26,15 @@ export default defineConfig({
     envDir: process.cwd(),
   },
   cleanUrls: true,
-  appearance: 'force-dark',
+  appearance: true,
   lastUpdated: true,
   sitemap: {
     hostname: siteUrl,
     transformItems: transformSitemapItems,
   },
   head: [
-    ['meta', { name: 'theme-color', content: '#0A0E12' }],
+    ['meta', { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#0d1117', media: '(prefers-color-scheme: dark)' }],
     ['meta', { name: 'referrer', content: 'strict-origin-when-cross-origin' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'BKMPG RSS', href: '/rss.xml' }],
@@ -41,26 +42,19 @@ export default defineConfig({
   markdown: {
     lineNumbers: true,
     theme: {
-      name: 'developer-terminal',
-      type: 'dark',
-      colors: { 'editor.background': '#0A0E12', 'editor.foreground': '#4AF626' },
-      tokenColors: [
-        { scope: ['comment', 'punctuation.definition.comment'], settings: { foreground: '#7182B5' } },
-        { scope: ['keyword', 'storage', 'constant.language'], settings: { foreground: '#FF79C6' } },
-        { scope: ['string', 'constant.numeric'], settings: { foreground: '#FFB86C' } },
-        { scope: ['entity.name', 'support', 'variable'], settings: { foreground: '#8BE9FD' } },
-      ],
+      light: 'github-light',
+      dark: 'github-dark',
     },
   },
   themeConfig: {
     siteTitle: 'BKMPG',
     nav: [
-      { text: '0:首页', link: '/' },
-      { text: '1:博客', link: '/blog/' },
-      { text: '2:教程', link: '/tutorials/' },
-      { text: '3:文档', link: '/docs/' },
-      { text: '4:标签', link: '/tags' },
-      { text: '5:链接', link: '/links' },
+      { text: '首页', link: '/' },
+      { text: '博客', link: '/blog/' },
+      { text: '教程', link: '/tutorials/' },
+      { text: '文档', link: '/docs/' },
+      { text: '标签', link: '/tags' },
+      { text: '链接', link: '/links' },
     ],
     sidebar: {
       '/blog/': [

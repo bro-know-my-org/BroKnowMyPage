@@ -10,10 +10,9 @@ const formatDate = (date: string) =>
 <template>
   <section class="home-latest">
     <div class="home-section-heading">
-      <h2 class="terminal-command"><span>visitor@stylekit:~$</span> ls -lt ~/recent</h2>
+      <h2>最近更新</h2>
       <a href="/tags">查看标签</a>
     </div>
-    <p class="terminal-comment"># 最近更新 · 按更新时间排列</p>
 
     <div class="recent-list">
       <a v-for="(article, index) in articles" :key="article.url" :href="article.url" class="recent-item">
@@ -21,7 +20,7 @@ const formatDate = (date: string) =>
         <span class="recent-item__main">
           <strong>{{ article.title }}</strong>
           <small>{{ article.description }}</small>
-          <small v-if="article.author" class="terminal-comment"># author: {{ article.author }}</small>
+          <small v-if="article.author">作者：{{ article.author }}</small>
         </span>
         <span class="recent-item__meta">
           <span>{{ article.section }}</span>

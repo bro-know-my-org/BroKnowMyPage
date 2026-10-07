@@ -103,11 +103,11 @@ watch(isDark, (darkMode) => instance?.setDarkMode?.(darkMode))
 <template>
   <section v-if="shouldShow" ref="root" class="comments" aria-labelledby="comments-heading">
     <div class="comments__heading">
-      <h2 id="comments-heading" class="terminal-command"><span>visitor@stylekit:~$</span> tail -f {{ heading === '留言' ? 'guestbook' : 'comments' }}.log</h2>
+      <h2 id="comments-heading">{{ heading }}</h2>
     </div>
     <div v-if="server" class="artalk-mount" />
-    <p v-else class="comments__notice"># 评论服务尚未配置，文章内容仍可正常阅读。</p>
-    <p v-if="status === 'loading'" class="comments__notice" role="status"># 正在加载评论…</p>
-    <p v-if="status === 'error'" class="comments__notice terminal-error" role="status">[1] ERR · 评论暂时不可用，请稍后再试。</p>
+    <p v-else class="comments__notice">评论服务尚未配置，文章内容仍可正常阅读。</p>
+    <p v-if="status === 'loading'" class="comments__notice" role="status">正在加载评论…</p>
+    <p v-if="status === 'error'" class="comments__notice comments__notice--error" role="status">评论暂时不可用，请稍后再试。</p>
   </section>
 </template>
