@@ -14,7 +14,7 @@
 .article-row__date {
   padding-top: 3px;
   color: var(--vp-c-text-3);
-  font-family: var(--vp-font-family-mono);
+  font-family: var(--vp-font-family-base);
   font-size: 12px;
 }
 

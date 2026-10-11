@@ -63,7 +63,7 @@
 }
 
 .link-entry__actions a {
-  color: var(--vp-c-brand-1);
+  color: var(--vp-c-text-1);
   font-size: 13px;
   font-weight: 300;
 }

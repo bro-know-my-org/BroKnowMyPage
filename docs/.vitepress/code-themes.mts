@@ -15,13 +15,13 @@ function tokenColors(colors: string[]) {
 export const nordicLight = {
   name: 'nordic-light',
   type: 'light' as const,
-  colors: { 'editor.background': '#ede7df', 'editor.foreground': '#3d3d3d' },
+  colors: { 'editor.background': '#ede7df', 'editor.foreground': '#000000f2' },
   tokenColors: tokenColors(['#6c6157', '#5b4b68', '#506b5d', '#785c40', '#486579', '#645d55']),
 }
 
 export const nordicDark = {
   name: 'nordic-dark',
   type: 'dark' as const,
-  colors: { 'editor.background': '#33302c', 'editor.foreground': '#e8e0d7' },
+  colors: { 'editor.background': '#33302c', 'editor.foreground': '#fffffff2' },
   tokenColors: tokenColors(['#c0b2a2', '#cab8d3', '#b4c9ba', '#d5b797', '#b5c9d5', '#c0b2a2']),
 }
