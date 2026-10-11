@@ -3,7 +3,7 @@ author: 假发
 title: R9000P 在 Linux 下只有 80W？把 NVIDIA Dynamic Boost 配起来
 description: R9000P 2021H 的 RTX 3060 在 Ubuntu 下显示 80W 上限，补齐 nvidia-powerd 服务与 D-Bus 权限后，实测上限升到 130W。
 date: 2026-09-06
-updated: 2026-09-15
+updated: 2026-10-11
 tags:
   - Linux
   - NVIDIA
@@ -21,7 +21,7 @@ tags:
 
 ## 环境与最初的读数
 
-| 项目 | 本次环境 |
+| 项目 | 初次排查环境 |
 | --- | --- |
 | 笔记本 | 联想 R9000P 2021H，机型代码 82JQ |
 | 显卡 | NVIDIA GeForce RTX 3060 Laptop GPU |
@@ -213,7 +213,7 @@ nvidia-smi -q -d POWER,PERFORMANCE
 
 本次实际将 `/var/log/auth.log` 从原来的 rsyslog 轮转组单独拆出，设置 `daily`、`maxsize 100M`、`rotate 7` 和 `compress`，并把 `logrotate.timer` 改为每小时检查。拆出时必须从旧规则中移除同一日志路径，避免重复定义；其他 rsyslog 日志仍保留原有轮转规则。
 
-修复后实测：服务为 `active`，当前功耗上限仍为 **130W**；连续 20 秒内认证日志没有增长，也没有新增 NVIDIA D-Bus 拒绝。两份历史认证日志合计约 **6.5 GiB**，压缩后约 **143 MiB**，`gzip -t` 完整性检查通过。这里验证的是当时桌面正常运行时的通信和日志情况，未进行持续满载、重启或电池模式测试。
+修复后实测：服务为 `active`，当前功耗上限仍为 **130W**；连续 20 秒内认证日志没有增长，也没有新增 NVIDIA D-Bus 拒绝。两份历史认证日志合计约 **6.5 GiB**，压缩后约 **143 MiB**，`gzip -t` 完整性检查通过。这里验证的是 2026-09-15 桌面正常运行时的通信和日志情况，当时未进行持续满载、重启或电池模式测试；后续重启复查见下文。
 
 ## 日志里剩下的 DC 错误是什么
 
@@ -254,7 +254,26 @@ nvidia-smi --query-gpu=timestamp,utilization.gpu,power.draw,temperature.gpu,cloc
 nvidia-smi -q -d POWER,PERFORMANCE,TEMPERATURE
 ```
 
-满载时出现 `SW Power Cap: Active`，表示当时频率受功耗约束，不一定是故障。判断改善效果还要结合任务耗时、帧率和温度。持续满载表现以及重启后的实际读数，本次尚未验证；目前只确认服务已经设置开机自启。
+满载时出现 `SW Power Cap: Active`，表示当时频率受功耗约束，不一定是故障。判断改善效果还要结合任务耗时、帧率和温度。持续满载表现仍未验证；重启后的服务与功耗上限已在下面的复查中确认。
+
+## 2026-10-11 复查：重启结果与服务文件维护
+
+这次复查时驱动已升级到 **595.91.07**。本次开机后，`nvidia-powerd` 正常启动并记录 `DBus Connection is established`，`Current Power Limit` 仍为 **130W**；检查本次启动的 `dbus-daemon` 日志，没有匹配到 NVIDIA D-Bus 拒绝记录。DC 控制器的几条提示仍在，验证范围依然是插电情况下的服务、通信日志与功耗上限，没有增加持续满载或电池模式测试。
+
+另外发现一个升级后的维护问题：软件包现在已提供 `/usr/lib/systemd/system/nvidia-powerd.service`，但最初手动复制的 `/etc/systemd/system/nvidia-powerd.service` 仍在，优先级更高，会覆盖软件包版本。
+
+可以先只读核对正在使用的文件与差异：
+
+```bash
+systemctl show nvidia-powerd.service -p FragmentPath
+systemctl cat nvidia-powerd.service
+diff -u /usr/lib/systemd/system/nvidia-powerd.service \
+  /etc/systemd/system/nvidia-powerd.service
+```
+
+`diff` 返回 1 表示文件存在差异。本机软件包版本多了 `SuccessExitStatus=1`，会将进程退出码 1 视为成功；旧完整覆盖没有接收到这项更新。这个差异涉及退出状态判定，不能仅据此推断服务会自动重启。
+
+对于同样从旧配置升级的机器，应先保存本地文件、核对软件包 unit 和所需设置，再将旧的完整覆盖移出加载路径，执行 `sudo systemctl daemon-reload` 并重新检查 `FragmentPath`。在合适时机重启服务后，还应复查状态与日志。需要保留的个别调整可用 drop-in 管理，以继续接收软件包 unit 更新。移交服务文件时应保留仍有必要的 D-Bus 策略；这与下文完全撤销功能不同。本次只完成了差异核对，尚未移走本机的旧覆盖文件。
 
 ## 如何撤销这次配置
 
