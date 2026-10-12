@@ -3,7 +3,7 @@ author: 假发
 title: 给 Codex 配个小模型跑腿，高级模型调用量直接腰斩
 description: 用 quick_explorer 接手搜索、盘点和配置核对，我的实测中高级模型调用量大约减半。记录配置方法，以及这种分工为什么能省额度。
 date: 2026-09-10
-updated: 2026-09-10
+updated: 2026-10-12
 tags:
   - Codex
   - AI
@@ -15,6 +15,8 @@ tags:
 受隔壁群友指点，给 Codex 配了个小模型子代理。用了之后，高级模型调用量大约少了一半，省下不少额度，把配置分享出来。
 
 我用 Astra 当主模型，Luna 当子代理 `quick_explorer`。查文件、统计数量、对比配置这些活交给 Luna，判断方案、写代码还是 Astra 来。
+
+后续我又做了 [agy-delegate-rs](/blog/tools/agy-delegate-rs)，通过 MCP 把只读调查交给 Antigravity CLI，用又快又便宜的 Gemini Flash High 跑腿。执行 `install` 接入后，Codex 会自动优先委派，`quick_explorer` 留作回退；具体用法见那篇介绍。
 
 ## 为什么能省
 

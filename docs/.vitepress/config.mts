@@ -67,6 +67,13 @@ export default defineConfig({
           ],
         },
         {
+          text: 'AI 工具实践',
+          items: [
+            { text: 'agy-delegate-rs 外部调查', link: '/blog/tools/agy-delegate-rs' },
+            { text: 'Codex 小模型子代理', link: '/blog/tools/codex-quick-explorer' },
+          ],
+        },
+        {
           text: '故障排查记录',
           items: [
             { text: 'PipeWire USB DAC 音量修复', link: '/blog/linux/pipewire-usb-dac-volume-fix' },
