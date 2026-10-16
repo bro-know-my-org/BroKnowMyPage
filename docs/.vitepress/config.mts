@@ -74,6 +74,12 @@ export default defineConfig({
           ],
         },
         {
+          text: '界面实验',
+          items: [
+            { text: '清透曲面玻璃 UI 试做', link: '/blog/ui/clear-liquid-glass' },
+          ],
+        },
+        {
           text: '故障排查记录',
           items: [
             { text: 'PipeWire USB DAC 音量修复', link: '/blog/linux/pipewire-usb-dac-volume-fix' },
