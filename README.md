@@ -30,7 +30,7 @@
 
 ## 环境要求
 
-- Node.js 22 或更高版本；
+- Node.js 26.13.0 LTS 或更高版本；使用 nvm 时可运行 `nvm install && nvm use`，版本由 `.nvmrc` 指定；
 - pnpm 10 或更高版本。仓库通过 `packageManager` 固定当前 pnpm 版本。
 
 首次运行：
