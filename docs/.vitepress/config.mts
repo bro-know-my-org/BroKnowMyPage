@@ -69,7 +69,7 @@ export default defineConfig({
         {
           text: 'AI 工具实践',
           items: [
-            { text: 'agy-delegate-rs 外部调查', link: '/blog/tools/agy-delegate-rs' },
+            { text: '用 agy / dsh 给 Codex 跑腿', link: '/blog/tools/codex-readonly-delegation' },
             { text: 'Codex 小模型子代理', link: '/blog/tools/codex-quick-explorer' },
           ],
         },
